@@ -8,5 +8,7 @@ geodash3
 !CMakeLists.txt
 #and level-list.txt
 !level-list.txt
+#and the license
+!LICENSE.txt
 
 CMakeFiles
