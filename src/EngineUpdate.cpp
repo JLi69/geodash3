@@ -16,13 +16,13 @@ void Geodash3::Engine::m_Update()
 		this->m_levels.at(this->m_levels.size() - 1).spikes.clear();
 		this->m_currentLevel = this->m_levels.size() - 1;
 		//Player cube runs off into the sunset
-		this->m_playerCube.movement.z = -0.002f;
+		this->m_playerCube.movement.z = -20.0f;
 	}
 
 	//Update the blocks
 	bool hit = false; //Store if the player collided with a block
 
-	this->m_levels.at(this->m_currentLevel).levelEnd += 0.0015f * 1.0f / this->m_secondsToDrawFrame;
+	this->m_levels.at(this->m_currentLevel).levelEnd += 5.0f * this->m_secondsToDrawFrame;
 
 	for(auto &block : this->m_levels.at(this->m_currentLevel).blocks)
 	{
@@ -49,7 +49,7 @@ void Geodash3::Engine::m_Update()
 				continue;
 			}
 			//Player fell on top of the cube
-			if(this->m_playerCube.falling)
+			if (this->m_playerCube.falling)
 				this->m_playerCube.position.y = block.position.y + this->m_playerCube.dimensions.y + block.dimensions.y;
 
 			this->m_playerCube.falling = false;

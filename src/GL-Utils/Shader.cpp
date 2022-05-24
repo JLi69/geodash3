@@ -25,7 +25,7 @@ void Shader::m_PrintShaderLog(unsigned int shader)
 		//Output the error message
 		std::cout << "Shader info log: " << msg << '\n';
 
-		delete msg;
+		delete[] msg;
 	}
 }
 

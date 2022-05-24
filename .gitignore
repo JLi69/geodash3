@@ -2,6 +2,12 @@ Makefile
 geodash3
 *.cmake
 
+#for windows
+.vs
+geodash3.exe
+out
+*~
+
 #ignore all txt files
 *.txt
 #except for CMakeLists.txt

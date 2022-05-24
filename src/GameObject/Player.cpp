@@ -3,7 +3,7 @@
 void Geodash3::Player::Update(float secToDrawFrame)
 {
 	//Move the player
-	this->position += this->movement * 1.0f / secToDrawFrame;
+	this->position += this->movement * secToDrawFrame;
 	//Move the collider
 	this->m_collider.position = this->position;
 	this->m_collider.position.y -= 0.05f;
@@ -16,11 +16,11 @@ void Geodash3::Player::Update(float secToDrawFrame)
 
 	if(this->falling)
 	{
-		this->m_gravity = 0.0002f;
-		this->movement.y -= this->m_gravity;
+		this->m_gravity = 30.0f;
+		this->movement.y -= this->m_gravity * secToDrawFrame;
 		
 		//Have the player spin
-		this->rotation.x += 0.1f;
+		this->rotation.x += 6.0f * secToDrawFrame;
 	}
 	//Player is on ground, should not be affected by gravity
 	else if(this->position.y <= -1.8f)
