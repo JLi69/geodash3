@@ -8,8 +8,8 @@ include_directories(${CMAKE_SOURCE_DIR}/dependencies/include)
 
 find_package(OpenGL REQUIRED)
 
-if(${CMAKE_HOST_SYSTEM} STREQUAL "Windows")
-	set(CMAKE_CXX_FLAGS "-mwindows -O2")
+if(${CMAKE_HOST_SYSTEM_NAME} STREQUAL "Windows")
+	set(CMAKE_CXX_FLAGS "-mwindows -O2 -static-libstdc++ -static-libgcc")
 else()
 	set(CMAKE_CXX_FLAGS "-O2")
 endif()
