@@ -9,9 +9,11 @@ out vec4 o_Color;
 //location of the fragment in 3D space
 in vec4 fragPos;
 
+in float o_Shading;
+
 void main()
 {
-	o_Color = u_Color;
+	o_Color = u_Color * o_Shading;
 
 	if(fragPos.x + 0.5 + fragPos.z + 0.5 <= fragPos.y + 0.5 &&
 		fragPos.x + 0.5 + fragPos.z + 0.5 >= fragPos.y - 0.5 ||

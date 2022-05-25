@@ -10,7 +10,7 @@ in float o_Shading;
 
 void main()
 {
-	o_Color = u_Color;
+	o_Color = u_Color * o_Shading;
 
 	//Outline the cube
 	if(abs(fragPos.x) > 0.95 && abs(fragPos.y) > 0.95 ||

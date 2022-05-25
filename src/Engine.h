@@ -41,7 +41,8 @@ namespace Geodash3
 						m_pyramid = VertexBufferObj(); //Pyramid Object
 		//Shaders
 		Shader m_basic3D, //Basic cube shader
-			   m_basicPyramid3D; //Basic pyramid shader
+			   m_basicPyramid3D, //Basic pyramid shader
+			   m_shaded3D;
 
 		//Game objects
 		//Player object

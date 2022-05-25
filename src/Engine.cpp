@@ -67,6 +67,7 @@ Geodash3::Engine::Engine()
 	//Set up the shaders
 	GL_CALL(m_basicPyramid3D.CreateShader("res/shaders/vert-3d.glsl", "res/shaders/pyramid-frag.glsl"));
 	GL_CALL(m_basic3D.CreateShader("res/shaders/vert-3d.glsl", "res/shaders/basic-frag.glsl"));	
+	GL_CALL(m_shaded3D.CreateShader("res/shaders/vert-3d.glsl", "res/shaders/shaded-frag.glsl"));
 
 	//Set up key input
 	glfwSetWindowUserPointer(this->m_gameWindow, this);
