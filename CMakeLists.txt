@@ -46,7 +46,7 @@ add_executable(
 	${PROJECT_SOURCE_DIR}/src/Level/level.cpp
 )
 
-if(${CMAKE_HOST_SYSTEM} STREQUAL "Windows")
+if(${CMAKE_HOST_SYSTEM_NAME} STREQUAL "Windows")
 	link_libraries(gdi32)
 	target_link_libraries(${PROJECT_NAME} user32 kernel32 winspool.lib
 							comdlg32 advapi32 shell32 ole32 oleaut32
