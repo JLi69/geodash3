@@ -27,6 +27,8 @@ Geodash3::Level Geodash3::LoadLevel(std::string levelFilePath)
 		//Ignore empty lines
 		if(line.size() == 0)
 			continue;
+		if((int)line[0] == 13)
+			continue;
 
 		end = line.size() > end ? line.size() : end;
 
