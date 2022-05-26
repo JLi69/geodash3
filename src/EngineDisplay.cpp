@@ -4,6 +4,20 @@
 
 void Geodash3::Engine::m_Display()
 {
+	//RGB background
+	static float rgb[3] = { 1.0f, 0.0f, 0.0f };
+	static int index = 0;
+	rgb[index] -= 1.0f / 16.0f * this->m_secondsToDrawFrame;	
+	rgb[(index + 1) % 3] += 1.0f / 8.0f * this->m_secondsToDrawFrame;
+	//Cycle through the colors
+	if(rgb[index] <= 0.0f)
+	{
+		rgb[index] = 0.0f;
+		index++;
+		index %= 3;
+	}
+	GL_CALL(glClearColor(rgb[0], rgb[1], rgb[2], 1.0f));
+
 	//Clear the depth buffer bit and the screen
 	GL_CALL(glClear(GL_COLOR_BUFFER_BIT));
 	GL_CALL(glClear(GL_DEPTH_BUFFER_BIT));
