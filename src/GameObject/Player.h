@@ -12,7 +12,8 @@ namespace Geodash3
 		Geodash3::Collider m_collider; //Box collider for the player
 	public:
 		bool falling = false,
-			 canJump = true; //Stores if the player can jump
+			 canJump = true, //Stores if the player can jump
+			 isJumping = false; //Stores if the player is jumping
 
 		void Update(float secToDrawFrame); //Update the player object
 

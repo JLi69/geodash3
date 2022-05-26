@@ -14,11 +14,7 @@ void Geodash3::Engine::m_HandleKeyInput(GLFWwindow* win, int key, int scancode, 
 			break;
 		//JUMP
 		case GLFW_KEY_SPACE:
-			if (this->m_playerCube.canJump)
-			{
-				this->m_playerCube.position.y += 0.1f;
-				this->m_playerCube.movement.y = 8.0f;
-			}
+			this->m_playerCube.isJumping = true;	
 			break;
 		}
 	}
@@ -31,6 +27,10 @@ void Geodash3::Engine::m_HandleKeyInput(GLFWwindow* win, int key, int scancode, 
 			break;
 		case GLFW_KEY_D:
 			this->m_playerCube.movement.x = 0.0f;
+			break;
+		//Stop jumping
+		case GLFW_KEY_SPACE:
+			this->m_playerCube.isJumping = false;
 			break;
 		}
 	}

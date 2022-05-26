@@ -1,7 +1,14 @@
 #include "Player.h"
 
 void Geodash3::Player::Update(float secToDrawFrame)
-{
+{	
+	//Jump
+	if (this->isJumping && this->canJump)
+	{
+		this->position.y += 0.2f;
+		this->movement.y = 8.0f;
+	}
+
 	//Move the player
 	this->position += this->movement * secToDrawFrame;
 	//Move the collider
