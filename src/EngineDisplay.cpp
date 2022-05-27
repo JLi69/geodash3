@@ -98,7 +98,7 @@ void Geodash3::Engine::m_Display()
 	GL_CALL(this->m_rect.Enable());
 	GL_CALL(glUseProgram(m_progressShader.GetId()));
 	GL_CALL(glUniformMatrix4fv(m_progressShader.GetUniformLocation("u_PerspectiveMat"), 1, false, glm::value_ptr(this->m_perspectiveMat)));
-	GL_CALL(glUniform1f(m_progressShader.GetUniformLocation("u_percentage"), 1.0f - (-this->m_levels.at(this->m_currentLevel).levelEnd - 1.0f) / (this->m_levels.at(this->m_currentLevel).levelLength - 28.0f)));
+	GL_CALL(glUniform1f(m_progressShader.GetUniformLocation("u_percentage"), 1.0f - (-this->m_levels.at(this->m_currentLevel).levelEnd - 1.0f) / (this->m_levels.at(this->m_currentLevel).levelLength - 26.0f)));
 	m_modelViewMat = m_rotationMatrix *
 					 m_viewMatrix *
 					 glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.057f, -0.12f)) *
