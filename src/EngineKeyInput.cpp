@@ -16,6 +16,10 @@ void Geodash3::Engine::m_HandleKeyInput(GLFWwindow* win, int key, int scancode, 
 		case GLFW_KEY_SPACE:
 			this->m_playerCube.isJumping = true;	
 			break;
+		//Toggle RGB background
+		case GLFW_KEY_T:
+			this->m_rgbEnabled = !this->m_rgbEnabled;
+			break;
 		}
 	}
 	else if(action == GLFW_RELEASE)

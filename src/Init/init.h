@@ -31,6 +31,18 @@ namespace Geodash3
 		1.0f, -1.0f, 1.0f, -1.0f, -1.0f, -1.0f, 1.0f, -1.0f, -1.0f // base – right back
 	};
 
+	//Rectangle
+	const float rect[] = 
+	{
+		-1.0f, 1.0f, 0.0f,
+		1.0f, 1.0f, 0.0f,
+		1.0f, -1.0f, 0.0f,
+
+		1.0f, -1.0f, 0.0f,
+		-1.0f, -1.0f, 0.0f,
+		-1.0f, 1.0f, 0.0f
+	};
+
 	//Initialize variables
 	void init(GLFWwindow *&win, const char *title, GLFWwindowsizefun onWindowResize);
 }

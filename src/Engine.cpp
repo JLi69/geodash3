@@ -63,11 +63,15 @@ Geodash3::Engine::Engine()
 	//Pyramid
 	GL_CALL(m_pyramid.GenBuffer());
 	GL_CALL(m_pyramid.Data(&Geodash3::pyramidVerts[0], sizeof(Geodash3::pyramidVerts), 3));
+	//Rectangle
+	GL_CALL(m_rect.GenBuffer());
+	GL_CALL(m_rect.Data(&Geodash3::rect[0], sizeof(Geodash3::rect), 3));
 
 	//Set up the shaders
 	GL_CALL(m_basicPyramid3D.CreateShader("res/shaders/vert-3d.glsl", "res/shaders/pyramid-frag.glsl"));
 	GL_CALL(m_basic3D.CreateShader("res/shaders/vert-3d.glsl", "res/shaders/basic-frag.glsl"));	
 	GL_CALL(m_shaded3D.CreateShader("res/shaders/vert-3d.glsl", "res/shaders/shaded-frag.glsl"));
+	GL_CALL(m_progressShader.CreateShader("res/shaders/vert-3d.glsl", "res/shaders/progress.glsl"));
 
 	//Set up key input
 	glfwSetWindowUserPointer(this->m_gameWindow, this);

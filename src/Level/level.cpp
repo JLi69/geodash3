@@ -59,7 +59,8 @@ Geodash3::Level Geodash3::LoadLevel(std::string levelFilePath)
 	}
 
 	loaded.levelEnd -= (float)end * 0.5f;
-	
+	loaded.levelLength = -loaded.levelEnd - 1.0f;
+
 	//Close the file
 	levelFile.close();
 

@@ -7,16 +7,24 @@ void Geodash3::Engine::m_Display()
 	//RGB background
 	static float rgb[3] = { 1.0f, 0.0f, 0.0f };
 	static int index = 0;
-	rgb[index] -= 1.0f / 16.0f * this->m_secondsToDrawFrame;	
-	rgb[(index + 1) % 3] += 1.0f / 8.0f * this->m_secondsToDrawFrame;
-	//Cycle through the colors
-	if(rgb[index] <= 0.0f)
+	if(this->m_rgbEnabled)
 	{
-		rgb[index] = 0.0f;
-		index++;
-		index %= 3;
+		rgb[index] -= 1.0f / 16.0f * this->m_secondsToDrawFrame;	
+		rgb[(index + 1) % 3] += 1.0f / 8.0f * this->m_secondsToDrawFrame;
+		//Cycle through the colors
+		if(rgb[index] <= 0.0f)
+		{
+			rgb[index] = 0.0f;
+			index++;
+			index %= 3;
+		}
+		GL_CALL(glClearColor(rgb[0], rgb[1], rgb[2], 1.0f));
 	}
-	GL_CALL(glClearColor(rgb[0], rgb[1], rgb[2], 1.0f));
+	//RGB background is off
+	else
+	{
+		GL_CALL(glClearColor(0.0f, 0.8f, 1.0f, 1.0f));
+	}
 
 	//Clear the depth buffer bit and the screen
 	GL_CALL(glClear(GL_COLOR_BUFFER_BIT));
@@ -84,6 +92,19 @@ void Geodash3::Engine::m_Display()
 		GL_CALL(glUniform4f(m_basicPyramid3D.GetUniformLocation("u_Color"), 1.0f, 0.0f, 0.0f, 1.0f));
 		GL_CALL(glDrawArrays(GL_TRIANGLES, 0, 18));
 	}
+
+	//Draw the progress bar
+	GL_CALL(glFrontFace(GL_CW));
+	GL_CALL(this->m_rect.Enable());
+	GL_CALL(glUseProgram(m_progressShader.GetId()));
+	GL_CALL(glUniformMatrix4fv(m_progressShader.GetUniformLocation("u_PerspectiveMat"), 1, false, glm::value_ptr(this->m_perspectiveMat)));
+	GL_CALL(glUniform1f(m_progressShader.GetUniformLocation("u_percentage"), 1.0f - (-this->m_levels.at(this->m_currentLevel).levelEnd - 1.0f) / (this->m_levels.at(this->m_currentLevel).levelLength - 28.0f)));
+	m_modelViewMat = m_rotationMatrix *
+					 m_viewMatrix *
+					 glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.057f, -0.12f)) *
+					 glm::scale(glm::mat4(1.0f), glm::vec3(0.1f, 0.0015f, 1.0f));
+	GL_CALL(glUniformMatrix4fv(m_progressShader.GetUniformLocation("u_ModelViewMat"), 1, false, glm::value_ptr(m_modelViewMat)));
+	GL_CALL(glDrawArrays(GL_TRIANGLES, 0, 6));
 
 	//GLFW stuff
 	glfwSwapBuffers(m_gameWindow);

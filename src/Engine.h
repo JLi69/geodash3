@@ -38,11 +38,13 @@ namespace Geodash3
 
 		//Vertex buffers
 		VertexBufferObj m_cube = VertexBufferObj(), //Cube object
-						m_pyramid = VertexBufferObj(); //Pyramid Object
+						m_pyramid = VertexBufferObj(), //Pyramid Object
+						m_rect = VertexBufferObj(); //2D Rectangle
 		//Shaders
 		Shader m_basic3D, //Basic cube shader
 			   m_basicPyramid3D, //Basic pyramid shader
-			   m_shaded3D;
+			   m_shaded3D,
+			   m_progressShader; //Progress bar shader
 
 		//Game objects
 		//Player object
@@ -59,6 +61,9 @@ namespace Geodash3
 
 		//Handle key input
 		void m_HandleKeyInput(GLFWwindow* win, int key, int scancode, int action, int mods);
+
+		//RGB enabled
+		bool m_rgbEnabled = false;
 
 		//Render game objects onto the screen
 		void m_Display();
