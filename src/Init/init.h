@@ -32,7 +32,7 @@ namespace Geodash3
 	};
 
 	//Rectangle
-	const float rect[] = 
+	const float rect[18] = 
 	{
 		-1.0f, 1.0f, 0.0f,
 		1.0f, 1.0f, 0.0f,
@@ -41,6 +41,28 @@ namespace Geodash3
 		1.0f, -1.0f, 0.0f,
 		-1.0f, -1.0f, 0.0f,
 		-1.0f, 1.0f, 0.0f
+	};
+
+	//Texture coordinates for a cube
+	const float texCubeCoords[] = 
+	{
+		 1.0f, 1.0f, 1.0f, 0.0f, 0.0f, 0.0f,
+		 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f,
+
+		 1.0f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f,
+		 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f,
+		 
+		 1.0f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f,
+		 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f,
+		 
+		 1.0f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f,
+		 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f,
+		 
+		 1.0f, 0.0f, 1.0f, 1.0f, 0.0f, 1.0f, 
+		 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f,
+		 
+		 0.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f,
+		 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f 
 	};
 
 	//Initialize variables

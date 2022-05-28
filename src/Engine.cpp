@@ -73,6 +73,13 @@ Geodash3::Engine::Engine()
 	GL_CALL(m_shaded3D.CreateShader("res/shaders/vert-3d.glsl", "res/shaders/shaded-frag.glsl"));
 	GL_CALL(m_progressShader.CreateShader("res/shaders/vert-3d.glsl", "res/shaders/progress.glsl"));
 
+	//Set up the textures
+	this->m_test = TextureObj("res/textures/test-texture.png");
+	
+	//Set up the texture coordinates
+	GL_CALL(this->m_cubeCoords.GenBuffer());
+	GL_CALL(this->m_cubeCoords.Data(&Geodash3::texCubeCoords[0], sizeof(Geodash3::texCubeCoords), 2));
+
 	//Set up key input
 	glfwSetWindowUserPointer(this->m_gameWindow, this);
 	auto keyInputFunc = [](GLFWwindow* win, int key, int scancode, int action, int mods)

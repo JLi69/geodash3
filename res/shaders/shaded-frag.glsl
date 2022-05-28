@@ -8,9 +8,15 @@ in vec4 fragPos;
 
 in float o_Shading;
 
+//Texture coordinate
+in vec2 o_texCoord;
+
+layout(binding = 0) uniform sampler2D samp;
+
 void main()
 {
 	o_Color = u_Color * o_Shading;
+	o_Color = texture(samp, o_texCoord) * o_Shading;
 
 	//Outline the cube
 	if(abs(fragPos.x) > 0.95 && abs(fragPos.y) > 0.95 ||

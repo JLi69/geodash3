@@ -5,6 +5,8 @@
 #include "GL-Utils/GetOpenGLError.h"
 #include "GL-Utils/Shader.h"
 #include "GL-Utils/VertexBufferObj.h"
+#include "GL-Utils/Texture-Utils/TextureObj.h"
+#include "GL-Utils/Texture-Utils/TextureCoords.h"
 
 #include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>
@@ -40,6 +42,14 @@ namespace Geodash3
 		VertexBufferObj m_cube = VertexBufferObj(), //Cube object
 						m_pyramid = VertexBufferObj(), //Pyramid Object
 						m_rect = VertexBufferObj(); //2D Rectangle
+		
+		//Textures
+		TextureObj m_test;
+
+		//Texture coordinates
+		//Texture coordinates for a cube
+		TextureCoords m_cubeCoords = TextureCoords();
+		
 		//Shaders
 		Shader m_basic3D, //Basic cube shader
 			   m_basicPyramid3D, //Basic pyramid shader

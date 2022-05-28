@@ -43,6 +43,11 @@ void Geodash3::Engine::m_Display()
 	GL_CALL(glDrawArrays(GL_TRIANGLES, 0, 36));
 
 	//Draw the player
+	//Test texture
+	GL_CALL(this->m_test.ActivateTexture(GL_TEXTURE0));
+	//Set the texture coordinates for the cube
+	GL_CALL(this->m_cubeCoords.Enable());
+
 	m_modelViewMat = m_rotationMatrix * 
 					 m_viewMatrix * 
 					 glm::translate(glm::mat4(1.0f), this->m_playerCube.position) *
