@@ -28,7 +28,7 @@ void main()
 	o_texCoord = texCoord;
 
 	if(pos.y == 1.0)
-		o_Shading = 0.6;
+		o_Shading = 0.4;
 	else if(pos.y == -1.0)
 		o_Shading = 1.0;
 }

@@ -74,7 +74,7 @@ Geodash3::Engine::Engine()
 	GL_CALL(m_progressShader.CreateShader("res/shaders/vert-3d.glsl", "res/shaders/progress.glsl"));
 
 	//Set up the textures
-	this->m_test = TextureObj("res/textures/test-texture.png");
+	this->m_test = TextureObj("res/textures/arrow-right.png");
 	
 	//Set up the texture coordinates
 	GL_CALL(this->m_cubeCoords.GenBuffer());
