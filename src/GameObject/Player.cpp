@@ -27,7 +27,7 @@ void Geodash3::Player::Update(float secToDrawFrame)
 		this->movement.y -= this->m_gravity * secToDrawFrame;
 		
 		//Have the player spin
-		this->rotation.x += 6.0f * secToDrawFrame;
+		this->rotation.x += 12.0f * secToDrawFrame;
 	}
 	//Player is on ground, should not be affected by gravity
 	else if(this->position.y <= -1.8f)

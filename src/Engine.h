@@ -44,11 +44,14 @@ namespace Geodash3
 						m_rect = VertexBufferObj(); //2D Rectangle
 		
 		//Textures
-		TextureObj m_test;
+		TextureObj m_player,
+				   m_ground,
+				   m_brick;
 
 		//Texture coordinates
 		//Texture coordinates for a cube
-		TextureCoords m_cubeCoords = TextureCoords();
+		TextureCoords m_cubeCoords = TextureCoords(),
+					  m_pyrCoords = TextureCoords();
 		
 		//Shaders
 		Shader m_basic3D, //Basic cube shader

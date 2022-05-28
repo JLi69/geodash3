@@ -30,11 +30,15 @@ void Geodash3::Engine::m_Display()
 	GL_CALL(glClear(GL_COLOR_BUFFER_BIT));
 	GL_CALL(glClear(GL_DEPTH_BUFFER_BIT));
 
+	//Enable the cube model
 	GL_CALL(m_cube.Enable());
 	GL_CALL(glUseProgram(m_basic3D.GetId()));
+	//Set the texture coordinates for the cube
+	GL_CALL(this->m_cubeCoords.Enable());
 
 	//Draw the ground
 	GL_CALL(glFrontFace(GL_CW));
+	GL_CALL(this->m_ground.ActivateTexture(GL_TEXTURE0));
 	GL_CALL(glUniformMatrix4fv(m_basic3D.GetUniformLocation("u_PerspectiveMat"), 1, false, glm::value_ptr(m_perspectiveMat)));
 	m_modelViewMat = m_rotationMatrix * m_viewMatrix * glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, -3.0f, -6.0f)) * glm::scale(glm::mat4(1.0f), glm::vec3(1.0f, 1.0f, 1000.0f));
 	GL_CALL(glUniformMatrix4fv(m_basic3D.GetUniformLocation("u_ModelViewMat"), 1, false, glm::value_ptr(m_modelViewMat)));
@@ -43,10 +47,7 @@ void Geodash3::Engine::m_Display()
 	GL_CALL(glDrawArrays(GL_TRIANGLES, 0, 36));
 
 	//Draw the player
-	//Test texture
-	GL_CALL(this->m_test.ActivateTexture(GL_TEXTURE0));
-	//Set the texture coordinates for the cube
-	GL_CALL(this->m_cubeCoords.Enable());
+	GL_CALL(this->m_player.ActivateTexture(GL_TEXTURE0));
 
 	m_modelViewMat = m_rotationMatrix * 
 					 m_viewMatrix * 
@@ -60,7 +61,8 @@ void Geodash3::Engine::m_Display()
 	GL_CALL(glUniform4f(m_basic3D.GetUniformLocation("u_Color"), 1.0f, 1.0f, 0.0f, 1.0f));
 	GL_CALL(glDrawArrays(GL_TRIANGLES, 0, 36));
 
-	//Display the block	
+	//Display the block
+	//GL_CALL(this->m_brick.ActivateTexture(GL_TEXTURE0));
 	GL_CALL(glUseProgram(this->m_shaded3D.GetId()));
 	GL_CALL(glUniformMatrix4fv(this->m_shaded3D.GetUniformLocation("u_PerspectiveMat"), 1, false, glm::value_ptr(this->m_perspectiveMat)));
 	for(auto block : this->m_levels.at(this->m_currentLevel).blocks)
@@ -79,6 +81,7 @@ void Geodash3::Engine::m_Display()
 	}
 
 	//Display the spikes
+	GL_CALL(this->m_pyrCoords.Enable());
 	GL_CALL(glFrontFace(GL_CCW));
 	GL_CALL(this->m_pyramid.Enable());
 	GL_CALL(glUseProgram(m_basicPyramid3D.GetId()));

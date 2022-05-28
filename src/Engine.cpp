@@ -74,11 +74,15 @@ Geodash3::Engine::Engine()
 	GL_CALL(m_progressShader.CreateShader("res/shaders/vert-3d.glsl", "res/shaders/progress.glsl"));
 
 	//Set up the textures
-	this->m_test = TextureObj("res/textures/arrow-right.png");
-	
+	this->m_player = TextureObj("res/textures/obama.png");
+	this->m_ground = TextureObj("res/textures/ground.png");
+	this->m_brick = TextureObj("res/textures/brick1.png");
+
 	//Set up the texture coordinates
 	GL_CALL(this->m_cubeCoords.GenBuffer());
 	GL_CALL(this->m_cubeCoords.Data(&Geodash3::texCubeCoords[0], sizeof(Geodash3::texCubeCoords), 2));
+	GL_CALL(this->m_pyrCoords.GenBuffer());
+	GL_CALL(this->m_pyrCoords.Data(&Geodash3::texPyrCoords[0], sizeof(Geodash3::texPyrCoords), 2));
 
 	//Set up key input
 	glfwSetWindowUserPointer(this->m_gameWindow, this);
