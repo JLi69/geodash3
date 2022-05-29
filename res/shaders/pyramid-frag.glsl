@@ -18,7 +18,7 @@ layout(binding = 0) uniform sampler2D samp;
 void main()
 {
 	o_Color = u_Color * o_Shading;
-	o_Color = texture(samp, o_texCoord);
+	o_Color = texture(samp, o_texCoord) * o_Shading;
 
 	if(fragPos.x + 0.5 + fragPos.z + 0.5 <= fragPos.y + 0.5 &&
 		fragPos.x + 0.5 + fragPos.z + 0.5 >= fragPos.y - 0.5 ||

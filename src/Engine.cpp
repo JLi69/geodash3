@@ -74,9 +74,10 @@ Geodash3::Engine::Engine()
 	GL_CALL(m_progressShader.CreateShader("res/shaders/vert-3d.glsl", "res/shaders/progress.glsl"));
 
 	//Set up the textures
-	this->m_player = TextureObj("res/textures/obama.png");
+	this->m_player = TextureObj("res/textures/player.png");
 	this->m_ground = TextureObj("res/textures/ground.png");
-	this->m_brick = TextureObj("res/textures/brick1.png");
+	this->m_block = TextureObj("res/textures/block1.png");
+	this->m_spike = TextureObj("res/textures/spike.png");
 
 	//Set up the texture coordinates
 	GL_CALL(this->m_cubeCoords.GenBuffer());

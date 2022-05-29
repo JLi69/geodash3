@@ -46,7 +46,8 @@ namespace Geodash3
 		//Textures
 		TextureObj m_player,
 				   m_ground,
-				   m_brick;
+				   m_block,
+				   m_spike;
 
 		//Texture coordinates
 		//Texture coordinates for a cube

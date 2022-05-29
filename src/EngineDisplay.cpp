@@ -38,6 +38,7 @@ void Geodash3::Engine::m_Display()
 
 	//Draw the ground
 	GL_CALL(glFrontFace(GL_CW));
+	//Ground texture
 	GL_CALL(this->m_ground.ActivateTexture(GL_TEXTURE0));
 	GL_CALL(glUniformMatrix4fv(m_basic3D.GetUniformLocation("u_PerspectiveMat"), 1, false, glm::value_ptr(m_perspectiveMat)));
 	m_modelViewMat = m_rotationMatrix * m_viewMatrix * glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, -3.0f, -6.0f)) * glm::scale(glm::mat4(1.0f), glm::vec3(1.0f, 1.0f, 1000.0f));
@@ -47,8 +48,8 @@ void Geodash3::Engine::m_Display()
 	GL_CALL(glDrawArrays(GL_TRIANGLES, 0, 36));
 
 	//Draw the player
+	//Player texture
 	GL_CALL(this->m_player.ActivateTexture(GL_TEXTURE0));
-
 	m_modelViewMat = m_rotationMatrix * 
 					 m_viewMatrix * 
 					 glm::translate(glm::mat4(1.0f), this->m_playerCube.position) *
@@ -62,7 +63,7 @@ void Geodash3::Engine::m_Display()
 	GL_CALL(glDrawArrays(GL_TRIANGLES, 0, 36));
 
 	//Display the block
-	//GL_CALL(this->m_brick.ActivateTexture(GL_TEXTURE0));
+	GL_CALL(this->m_block.ActivateTexture(GL_TEXTURE0));
 	GL_CALL(glUseProgram(this->m_shaded3D.GetId()));
 	GL_CALL(glUniformMatrix4fv(this->m_shaded3D.GetUniformLocation("u_PerspectiveMat"), 1, false, glm::value_ptr(this->m_perspectiveMat)));
 	for(auto block : this->m_levels.at(this->m_currentLevel).blocks)
@@ -70,10 +71,7 @@ void Geodash3::Engine::m_Display()
 		m_modelViewMat = m_rotationMatrix * 
 					 m_viewMatrix * 
 					 glm::translate(glm::mat4(1.0f), block.position) *
-					 glm::scale(glm::mat4(1.0f), block.dimensions) *
-					 glm::rotate(glm::mat4(1.0f), block.rotation.z, glm::vec3(0.0f, 0.0f, 1.0f)) *
-					 glm::rotate(glm::mat4(1.0f), block.rotation.y, glm::vec3(0.0f, 1.0f, 0.0f)) *
-					 glm::rotate(glm::mat4(1.0f), block.rotation.x, glm::vec3(1.0f, 0.0f, 0.0f));
+					 glm::scale(glm::mat4(1.0f), block.dimensions);
 		GL_CALL(glUniformMatrix4fv(m_shaded3D.GetUniformLocation("u_ModelViewMat"), 1, false, glm::value_ptr(m_modelViewMat)));	
 		
 		GL_CALL(glUniform4f(m_shaded3D.GetUniformLocation("u_Color"), 0.6f, 0.6f, 0.6f, 1.0f));
@@ -81,6 +79,8 @@ void Geodash3::Engine::m_Display()
 	}
 
 	//Display the spikes
+	//Spike texture
+	GL_CALL(this->m_spike.ActivateTexture(GL_TEXTURE0));
 	GL_CALL(this->m_pyrCoords.Enable());
 	GL_CALL(glFrontFace(GL_CCW));
 	GL_CALL(this->m_pyramid.Enable());
@@ -92,10 +92,7 @@ void Geodash3::Engine::m_Display()
 		m_modelViewMat = m_rotationMatrix *
 						 m_viewMatrix *
 						 glm::translate(glm::mat4(1.0f), spike.position) *
-						 glm::scale(glm::mat4(1.0f), spike.dimensions) *
-						 glm::rotate(glm::mat4(1.0f), spike.rotation.z, glm::vec3(0.0f, 0.0f, 1.0f)) *
-						 glm::rotate(glm::mat4(1.0f), spike.rotation.y, glm::vec3(0.0f, 1.0f, 0.0f)) *
-						 glm::rotate(glm::mat4(1.0f), spike.rotation.x, glm::vec3(1.0f, 0.0f, 0.0f));
+						 glm::scale(glm::mat4(1.0f), spike.dimensions);
 		GL_CALL(glUniformMatrix4fv(m_basicPyramid3D.GetUniformLocation("u_ModelViewMat"), 1, false, glm::value_ptr(m_modelViewMat)));
 		GL_CALL(glUniform4f(m_basicPyramid3D.GetUniformLocation("u_Color"), 1.0f, 0.0f, 0.0f, 1.0f));
 		GL_CALL(glDrawArrays(GL_TRIANGLES, 0, 18));
