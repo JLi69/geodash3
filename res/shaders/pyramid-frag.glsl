@@ -20,16 +20,18 @@ void main()
 	o_Color = u_Color * o_Shading;
 	o_Color = texture(samp, o_texCoord) * o_Shading;
 
-	if(fragPos.x + 0.5 + fragPos.z + 0.5 <= fragPos.y + 0.5 &&
-		fragPos.x + 0.5 + fragPos.z + 0.5 >= fragPos.y - 0.5 ||
+	if(fragPos.x + 0.5 + fragPos.z + 0.5 <= fragPos.y + 0.3 &&
+		fragPos.x + 0.5 + fragPos.z + 0.5 >= fragPos.y - 0.3 ||
 
-		-fragPos.x + 0.5 + fragPos.z + 0.5 <= fragPos.y + 0.5 &&
-		-fragPos.x + 0.5 + fragPos.z + 0.5 >= fragPos.y - 0.5 ||
+		-fragPos.x + 0.5 + fragPos.z + 0.5 <= fragPos.y + 0.3 &&
+		-fragPos.x + 0.5 + fragPos.z + 0.5 >= fragPos.y - 0.3 ||
 		
-		fragPos.x + 0.5 - fragPos.z + 0.5 <= fragPos.y + 0.5 &&
-		fragPos.x + 0.5 - fragPos.z + 0.5 >= fragPos.y - 0.5 ||
+		fragPos.x + 0.5 - fragPos.z + 0.5 <= fragPos.y + 0.3 &&
+		fragPos.x + 0.5 - fragPos.z + 0.5 >= fragPos.y - 0.3 ||
 
-		-fragPos.x + 0.5 - fragPos.z + 0.5 <= fragPos.y + 0.5 &&
-		-fragPos.x + 0.5 - fragPos.z + 0.5 >= fragPos.y - 0.5) 
+		-fragPos.x + 0.5 - fragPos.z + 0.5 <= fragPos.y + 0.3 &&
+		-fragPos.x + 0.5 - fragPos.z + 0.5 >= fragPos.y - 0.3 ||
+
+		fragPos.y < -0.8) 
 		o_Color *= 0.5;
 }
