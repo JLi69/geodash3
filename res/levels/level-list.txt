@@ -1,2 +1,3 @@
 res/levels/tutorial.lvl
 res/levels/level0.lvl
+res/levels/level1.lvl
