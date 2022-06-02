@@ -33,6 +33,9 @@ add_executable(
 	#init
 	${PROJECT_SOURCE_DIR}/src/Init/init.cpp
 
+	#open files
+	${PROJECT_SOURCE_DIR}/src/File/OpenFile.cpp
+
 	#Engine
 	${PROJECT_SOURCE_DIR}/src/Engine.cpp
 	${PROJECT_SOURCE_DIR}/src/EngineDisplay.cpp
@@ -60,10 +63,11 @@ if(${CMAKE_HOST_SYSTEM_NAME} STREQUAL "Windows")
 else()
 	target_link_libraries(${PROJECT_NAME} OpenGL::GL)
 	target_link_libraries(${PROJECT_NAME} glfw SOIL)
+	#install
 	install(TARGETS ${PROJECT_NAME}
 		DESTINATION /usr/bin)
 	install(DIRECTORY ${PROJECT_SOURCE_DIR}/res
-		DESTINATION $ENV{HOME}/.config/geodash3)	
+		DESTINATION /etc/geodash3)
 endif()
 
 #find_library(glfw3lib glfw3 PATHS ${CMAKE_SOURCE_DIR}/dependencies/lib-vc2019)

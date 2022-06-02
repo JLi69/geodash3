@@ -8,14 +8,21 @@ bool TextureObj::OpenTexture(std::string texPath)
 {
 	//Load the opngl texture
 	this->m_id = SOIL_load_OGL_texture(texPath.c_str(), SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, SOIL_FLAG_INVERT_Y);	
-	//Failed to open image file
-	//Try looking in HOME/.config/geodash3 on linux
+	//Failed to open image file on linux	
 #ifndef WINDOWS
+	//Try looking in HOME/.config/geodash3 on linux
 	if(this->m_id == 0)
 	{
 		const char* home = getenv("HOME");
 		std::stringstream newPath;
 		newPath << home << "/.config/geodash3/" << texPath;
+		this->m_id = SOIL_load_OGL_texture(newPath.str().c_str(), SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, SOIL_FLAG_INVERT_Y);
+	}
+	//Try looking in /etc/geodash3 on linux
+	if(this->m_id == 0)
+	{
+		std::stringstream newPath;
+		newPath << "/etc/geodash3/" << texPath;
 		this->m_id = SOIL_load_OGL_texture(newPath.str().c_str(), SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, SOIL_FLAG_INVERT_Y);
 	}
 #endif

@@ -3,6 +3,7 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
+#include "File/OpenFile.h"
 
 //Main loop
 void Geodash3::Engine::Run()
@@ -97,23 +98,8 @@ Geodash3::Engine::Engine()
 	glfwSetKeyCallback(m_gameWindow, keyInputFunc);
 
 	//Load the level files into memory
-	std::ifstream levelListFile("res/levels/level-list.txt");
-	//If failed to open, try looking in HOME/.config/geodash3 
-#ifndef WINDOWS
-	if(!levelListFile.is_open())
-	{
-		const char* home = getenv("HOME");
-		std::stringstream newPath;
-		newPath << home << "/.config/geodash3/res/levels/level-list.txt";
-		levelListFile = std::ifstream(newPath.str());
-	}
-#endif
-	//Failed to open level file list
-	if(!levelListFile.is_open())
-	{
-		std::cout << "Fatal: failed to open res/levels/level-list.txt!\n";
-		exit(-1);
-	}
+	bool success;
+	std::ifstream levelListFile = Geodash3::OpenFile("res/levels/level-list.txt", success);	
 	//read the level list file
 	std::string line;
 	while(std::getline(levelListFile, line))
