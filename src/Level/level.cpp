@@ -13,6 +13,7 @@ Geodash3::Level Geodash3::LoadLevel(std::string levelFilePath)
 
 	//File failed to open
 	//If failed, try to open file in HOME/.config/geodash3
+#ifndef WINDOWS	
 	if(!levelFile.is_open())
 	{	
 		const char* home = getenv("HOME");
@@ -20,6 +21,7 @@ Geodash3::Level Geodash3::LoadLevel(std::string levelFilePath)
 		newPath << home << "/.config/geodash3/" << levelFilePath;
 		levelFile = std::ifstream(newPath.str());
 	}
+#endif
 	//Otherwise, give an error message to stdout
 	if(!levelFile.is_open())
 	{
