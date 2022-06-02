@@ -9,7 +9,7 @@ include_directories(${CMAKE_SOURCE_DIR}/dependencies/include)
 find_package(OpenGL REQUIRED)
 
 if(${CMAKE_HOST_SYSTEM_NAME} STREQUAL "Windows")
-	set(CMAKE_CXX_FLAGS "-mwindows -O2 -static-libstdc++ -static-libgcc")
+	set(CMAKE_CXX_FLAGS "-mwindows -DWINDOWS -O2 -static-libstdc++ -static-libgcc")
 else()
 	set(CMAKE_CXX_FLAGS "-O2")
 endif()
@@ -60,6 +60,10 @@ if(${CMAKE_HOST_SYSTEM_NAME} STREQUAL "Windows")
 else()
 	target_link_libraries(${PROJECT_NAME} OpenGL::GL)
 	target_link_libraries(${PROJECT_NAME} glfw SOIL)
+	install(TARGETS ${PROJECT_NAME}
+		DESTINATION /usr/bin)
+	install(DIRECTORY ${PROJECT_SOURCE_DIR}/res
+		DESTINATION $ENV{HOME}/.config/geodash3)	
 endif()
 
 #find_library(glfw3lib glfw3 PATHS ${CMAKE_SOURCE_DIR}/dependencies/lib-vc2019)

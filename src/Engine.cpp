@@ -2,6 +2,7 @@
 #include <chrono>
 #include <iostream>
 #include <fstream>
+#include <sstream>
 
 //Main loop
 void Geodash3::Engine::Run()
@@ -97,6 +98,16 @@ Geodash3::Engine::Engine()
 
 	//Load the level files into memory
 	std::ifstream levelListFile("res/levels/level-list.txt");
+	//If failed to open, try looking in HOME/.config/geodash3 
+#ifndef WINDOWS
+	if(!levelListFile.is_open())
+	{
+		const char* home = getenv("HOME");
+		std::stringstream newPath;
+		newPath << home << "/.config/geodash3/res/levels/level-list.txt";
+		levelListFile = std::ifstream(newPath.str());
+	}
+#endif
 	//Failed to open level file list
 	if(!levelListFile.is_open())
 	{
