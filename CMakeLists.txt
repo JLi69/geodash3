@@ -63,7 +63,7 @@ if(${CMAKE_HOST_SYSTEM_NAME} STREQUAL "Windows")
 else()
 	target_link_libraries(${PROJECT_NAME} soil)
 	target_link_libraries(${PROJECT_NAME} OpenGL::GL)
-	target_link_libraries(${PROJECT_NAME} glfw)
+	target_link_libraries(${PROJECT_NAME} glfw3)
 	#install
 	install(TARGETS ${PROJECT_NAME}
 		DESTINATION /usr/bin)

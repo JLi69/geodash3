@@ -17,4 +17,7 @@ out
 #and the license
 !LICENSE.txt
 
+#ignore directory for creating debian packages
+deb
+
 CMakeFiles
