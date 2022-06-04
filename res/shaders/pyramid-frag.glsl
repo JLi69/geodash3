@@ -34,4 +34,5 @@ void main()
 
 		fragPos.y < -0.8) 
 		o_Color *= 0.5;
+	o_Color.a = 1.0;
 }

@@ -17,6 +17,7 @@ void main()
 {
 	o_Color = u_Color * o_Shading;
 	o_Color = texture(samp, o_texCoord) * o_Shading;
+	o_Color.a = 1.0;
 
 	//Outline the cube
 	if(abs(fragPos.x) > 0.95 && abs(fragPos.y) > 0.95 ||

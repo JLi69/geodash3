@@ -28,10 +28,10 @@ namespace Geodash3
 		glm::mat4 m_perspectiveMat = glm::perspective(FOV * 3.14159f / 180.0f, 1920.0f / 1080.0f, 0.1f, 1000.0f);
 		//Use this matrix to translate the models
 		//to the camera position
-		glm::mat4 m_viewMatrix = glm::mat4(1.0f);
+		glm::mat4 m_viewMatrix = glm::mat4(1.0f) * glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, -0.8f, 1.5f));
 		//Use this matrix to rotate the models
 		//to the camera rotation
-		glm::mat4 m_rotationMatrix = glm::rotate(glm::mat4(1.0f), 0.0f * 3.14159f / 180.0f, glm::vec3(0.0f, 1.0f, 0.0f));
+		glm::mat4 m_rotationMatrix = glm::rotate(glm::mat4(1.0f), 25.0f * 3.14159f / 180.0f, glm::vec3(1.0f, 0.0f, 0.0f));
 		//Preallocated model view matrix
 		glm::mat4 m_modelViewMat;
 
@@ -47,12 +47,14 @@ namespace Geodash3
 		TextureObj m_player,
 				   m_ground,
 				   m_blocks[3],
-				   m_spike;
+				   m_spike,
+				   m_pauseScreen;
 
 		//Texture coordinates
 		//Texture coordinates for a cube
 		TextureCoords m_cubeCoords = TextureCoords(),
-					  m_pyrCoords = TextureCoords();
+					  m_pyrCoords = TextureCoords(),
+					  m_rectCoords = TextureCoords();
 		
 		//Shaders
 		Shader m_basic3D, //Basic cube shader
@@ -70,6 +72,8 @@ namespace Geodash3
 													//set it equal to the corresponding level
 													//in this vector
 
+		//Whether the game is paused
+		bool m_paused = false;
 		//Number of seconds to draw the frame
 		float m_secondsToDrawFrame = 1.0f;
 

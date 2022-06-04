@@ -26,6 +26,9 @@ void Geodash3::Engine::m_Update()
 
 	for(auto &block : this->m_levels.at(this->m_currentLevel).blocks)
 	{
+		if(block.position.z > 1.0f)
+			continue;
+
 		//Check for collision
 		if(Geodash3::Collider::Colliding(this->m_playerCube.getCollider(), block.getCollider()))
 		{
@@ -56,7 +59,7 @@ void Geodash3::Engine::m_Update()
 			this->m_playerCube.movement.y = 0.0f;
 			this->m_playerCube.rotation.x = 0.0f;
 		}
-	
+
 		block.Update(this->m_secondsToDrawFrame);
 	}
 	
@@ -64,6 +67,11 @@ void Geodash3::Engine::m_Update()
 	//Update the spikes
 	for(auto &spike : this->m_levels.at(this->m_currentLevel).spikes)
 	{
+		if(spike.position.z > 1.0f)
+			continue;
+
+		spike.Update(this->m_secondsToDrawFrame);
+
 		//Check for collisions
 		for(int i = 0; i < 4; i++)
 		{
@@ -75,9 +83,7 @@ void Geodash3::Engine::m_Update()
 				this->m_levels.at(this->m_currentLevel) = this->m_resetLevels.at(this->m_currentLevel);	
 				return;
 			}
-		}
-	
-		spike.Update(this->m_secondsToDrawFrame);	
+		}	
 	}	
 
 	//Check if the player collided with a block

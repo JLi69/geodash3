@@ -15,6 +15,10 @@ void Geodash3::Engine::Run()
 	GL_CALL(glDepthFunc(GL_LEQUAL));
 	GL_CALL(glEnable(GL_CULL_FACE));
 
+	//Transparency
+	GL_CALL(glEnable(GL_BLEND));
+	GL_CALL(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
+
 	float avgFPS = 0.0f, //Average frames per second 
 		  frameCount = 0.0f; //Number of frames passed
 
@@ -22,8 +26,13 @@ void Geodash3::Engine::Run()
 	{
 		//Begin of frame
 		std::chrono::time_point<std::chrono::system_clock> begin = std::chrono::system_clock::now();
+		
 		this->m_Display();
-		this->m_Update();
+		//Don't update the game scene
+		//if the game is paused
+		if(!this->m_paused)
+			this->m_Update();
+
 		//Output frames per second
 		std::cout << "Frames Per Second: " << 1.0f / this->m_secondsToDrawFrame << '\n';
 		//End of frame
@@ -82,12 +91,15 @@ Geodash3::Engine::Engine()
 	GL_CALL(this->m_blocks[1] = TextureObj("res/textures/block2.png"));
 	GL_CALL(this->m_blocks[2] = TextureObj("res/textures/block3.png"));
 	GL_CALL(this->m_spike = TextureObj("res/textures/spike.png"));
+	GL_CALL(this->m_pauseScreen = TextureObj("res/textures/pause.png"));
 
 	//Set up the texture coordinates
 	GL_CALL(this->m_cubeCoords.GenBuffer());
 	GL_CALL(this->m_cubeCoords.Data(&Geodash3::texCubeCoords[0], sizeof(Geodash3::texCubeCoords), 2));
 	GL_CALL(this->m_pyrCoords.GenBuffer());
 	GL_CALL(this->m_pyrCoords.Data(&Geodash3::texPyrCoords[0], sizeof(Geodash3::texPyrCoords), 2));
+	GL_CALL(this->m_rectCoords.GenBuffer());
+	GL_CALL(this->m_rectCoords.Data(&Geodash3::texRectCoords[0], sizeof(Geodash3::texRectCoords), 2));
 
 	//Set up key input
 	glfwSetWindowUserPointer(this->m_gameWindow, this);

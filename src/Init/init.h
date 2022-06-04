@@ -73,6 +73,18 @@ namespace Geodash3
 		0.0f, 0.0f, 1.0f, 1.0f, 0.0f, 1.0f,		1.0f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f //base triangles	
 	};
 
+	//Texture coordinates for a rectangle
+	const float texRectCoords[] = 
+	{
+		0.0f, 1.0f,
+		1.0f, 1.0f,
+		1.0f, 0.0f,
+
+		1.0f, 0.0f,
+		0.0f, 0.0f,
+		0.0f, 1.0f
+	};
+
 	//Initialize variables
 	void init(GLFWwindow *&win, const char *title, GLFWwindowsizefun onWindowResize);
 }

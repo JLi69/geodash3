@@ -6,12 +6,12 @@ uniform float u_percentage; //percent of level completed
 
 void main()
 {
-	o_Color = vec4(0.0, 0.75, 0.0, 1.0);
+	o_Color = vec4(0.0, 0.75, 0.0, 0.5);
 
 	if(abs(fragPos.x) > 0.995 ||
 		abs(fragPos.y) > 0.8)
-		o_Color = vec4(0.0, 0.0, 0.0, 1.0);
+		o_Color = vec4(0.0, 0.0, 0.0, 0.5);
 
 	if((fragPos.x + 1.0) / 2.0 > u_percentage)
-		o_Color = vec4(0.0, 0.0, 0.0, 1.0);
+		o_Color = vec4(0.0, 0.0, 0.0, 0.5);
 }

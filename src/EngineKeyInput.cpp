@@ -20,6 +20,10 @@ void Geodash3::Engine::m_HandleKeyInput(GLFWwindow* win, int key, int scancode, 
 		case GLFW_KEY_T:
 			this->m_rgbEnabled = !this->m_rgbEnabled;
 			break;
+		//Pause the game
+		case GLFW_KEY_ESCAPE:
+			this->m_paused = !this->m_paused;
+			break;
 		}
 	}
 	else if(action == GLFW_RELEASE)

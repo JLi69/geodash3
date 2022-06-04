@@ -4,6 +4,12 @@
 
 void Geodash3::Engine::m_Display()
 {
+	//Update the view matrix
+	if(this->m_playerCube.position.y > -0.4f)
+		this->m_viewMatrix = glm::mat4(1.0f) * glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, -0.8f - (this->m_playerCube.position.y + 0.4f) * 0.9f, 1.5f)); 
+	else
+		this->m_viewMatrix = glm::mat4(1.0f) * glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, -0.8f, 1.5f));
+
 	//RGB background
 	static float rgb[3] = { 1.0f, 0.0f, 0.0f };
 	static int index = 0;
@@ -112,12 +118,23 @@ void Geodash3::Engine::m_Display()
 	GL_CALL(glUseProgram(m_progressShader.GetId()));
 	GL_CALL(glUniformMatrix4fv(m_progressShader.GetUniformLocation("u_PerspectiveMat"), 1, false, glm::value_ptr(this->m_perspectiveMat)));
 	GL_CALL(glUniform1f(m_progressShader.GetUniformLocation("u_percentage"), 1.0f - (-this->m_levels.at(this->m_currentLevel).levelEnd - 1.0f) / (this->m_levels.at(this->m_currentLevel).levelLength - 26.0f)));
-	m_modelViewMat = m_rotationMatrix *
-					 m_viewMatrix *
-					 glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.057f, -0.12f)) *
+	m_modelViewMat = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.059f, -0.12f)) *
 					 glm::scale(glm::mat4(1.0f), glm::vec3(0.1f, 0.0015f, 1.0f));
 	GL_CALL(glUniformMatrix4fv(m_progressShader.GetUniformLocation("u_ModelViewMat"), 1, false, glm::value_ptr(m_modelViewMat)));
 	GL_CALL(glDrawArrays(GL_TRIANGLES, 0, 6));
+
+	//Draw the pause screen
+	if(this->m_paused)
+	{
+		GL_CALL(this->m_rectCoords.Enable());
+		GL_CALL(this->m_pauseScreen.ActivateTexture(GL_TEXTURE0));
+		GL_CALL(glUseProgram(m_basic3D.GetId()));
+		GL_CALL(glUniformMatrix4fv(m_basic3D.GetUniformLocation("u_PerspectiveMat"), 1, false, glm::value_ptr(this->m_perspectiveMat)));	
+		m_modelViewMat = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, -0.12f)) *
+						 glm::scale(glm::mat4(1.0f), glm::vec3(0.12f, 0.0675f, 0.1f));
+		GL_CALL(glUniformMatrix4fv(m_basic3D.GetUniformLocation("u_ModelViewMat"), 1, false, glm::value_ptr(m_modelViewMat)));
+		GL_CALL(glDrawArrays(GL_TRIANGLES, 0, 6));
+	}
 
 	//GLFW stuff
 	glfwSwapBuffers(m_gameWindow);
