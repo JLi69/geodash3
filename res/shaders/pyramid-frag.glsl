@@ -13,12 +13,12 @@ in float o_Shading;
 
 //Texture stuff
 in vec2 o_texCoord;
-layout(binding = 0) uniform sampler2D samp;
+layout(binding = 1) uniform sampler2D samp2;
 
 void main()
 {
 	o_Color = u_Color * o_Shading;
-	o_Color = texture(samp, o_texCoord) * o_Shading;
+	o_Color = texture(samp2, o_texCoord) * o_Shading;
 
 	if(fragPos.x + 0.5 + fragPos.z + 0.5 <= fragPos.y + 0.3 &&
 		fragPos.x + 0.5 + fragPos.z + 0.5 >= fragPos.y - 0.3 ||

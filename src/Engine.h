@@ -7,6 +7,7 @@
 #include "GL-Utils/VertexBufferObj.h"
 #include "GL-Utils/Texture-Utils/TextureObj.h"
 #include "GL-Utils/Texture-Utils/TextureCoords.h"
+#include "Button/Button.h"
 
 #include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>
@@ -16,6 +17,10 @@
 #include "Level/level.h"
 
 #include <vector>
+
+/*
+ * RIP Code Quality
+ * */
 
 //Field of vision of the camera = 60 degrees
 #define FOV 55.0f
@@ -37,6 +42,12 @@ namespace Geodash3
 
 		//Game window
 		GLFWwindow *m_gameWindow;
+		//Buttons
+		Geodash3::Button m_quitButton = Geodash3::Button(),
+						 m_gotoMenuButton = Geodash3::Button(),
+						 m_playButton = Geodash3::Button(),
+						 m_prevButton = Geodash3::Button(),
+						 m_nextButton = Geodash3::Button();
 
 		//Vertex buffers
 		VertexBufferObj m_cube = VertexBufferObj(), //Cube object
@@ -48,7 +59,8 @@ namespace Geodash3
 				   m_ground,
 				   m_blocks[3],
 				   m_spike,
-				   m_pauseScreen;
+				   m_pauseScreen,
+				   m_title;
 
 		//Texture coordinates
 		//Texture coordinates for a cube
@@ -60,29 +72,33 @@ namespace Geodash3
 		Shader m_basic3D, //Basic cube shader
 			   m_basicPyramid3D, //Basic pyramid shader
 			   m_shaded3D,
-			   m_progressShader; //Progress bar shader
+			   m_progressShader, //Progress bar shader
+			   m_buttonShader;
 
 		//Game objects
 		//Player object
 		Geodash3::Player m_playerCube = Geodash3::Player(glm::vec3(0.0f, -1.8f, -4.5f));
 		//Level
-		int m_currentLevel = 0;
-		std::vector<Geodash3::Level> m_levels; //All the levels
-		std::vector<Geodash3::Level> m_resetLevels; //When you want to reset a level,
-													//set it equal to the corresponding level
-													//in this vector
+		short int m_currentLevel = 0, m_currentBlockType = -1;
+		Geodash3::Level m_level; //current level
+		std::vector<std::string> m_resetLevels; //When you want to reset a level,
+												//set it equal to the corresponding level
+												//in this vector
 
 		//Whether the game is paused
-		bool m_paused = false;
+		bool m_paused = true, m_menu = true;
 		//Number of seconds to draw the frame
 		float m_secondsToDrawFrame = 1.0f;
 
 		//Handle key input
-		void m_HandleKeyInput(GLFWwindow* win, int key, int scancode, int action, int mods);
+		void m_HandleKeyInput(GLFWwindow *win, int key, int scancode, int action, int mods);
+		//Mouse Coordinates
+		double m_mouseX = 0.0f, m_mouseY = 0.0f;
+		//Handle mouse input
+		void m_HandleMouseInput(GLFWwindow *win, int button, int action, int mods);
 
 		//RGB enabled
 		bool m_rgbEnabled = false;
-
 		//Render game objects onto the screen
 		void m_Display();
 		//Update the game objects

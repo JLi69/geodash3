@@ -4,6 +4,7 @@
 #include <cstdlib>
 #include <sstream>
 #include "../File/OpenFile.h"
+#include <algorithm>
 
 Geodash3::Level Geodash3::LoadLevel(std::string levelFilePath)
 {
@@ -73,6 +74,13 @@ Geodash3::Level Geodash3::LoadLevel(std::string levelFilePath)
 
 	//Close the file
 	levelFile.close();
+
+	//Sort the loaded level's blocks based on block type
+	std::sort(loaded.blocks.begin(), loaded.blocks.end(),
+			[](Block a, Block b)
+			{
+				return a.blockType > b.blockType;	
+			});
 
 	return loaded;
 }

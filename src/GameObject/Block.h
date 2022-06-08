@@ -8,7 +8,7 @@ namespace Geodash3
 	{
 		Geodash3::Collider m_collider;
 	public:
-		int blockType = 0;
+		short int blockType = 0;
 		//Update the block object
 		void Update(float secToDrawFrame);
 

@@ -22,7 +22,8 @@ void Geodash3::Engine::m_HandleKeyInput(GLFWwindow* win, int key, int scancode, 
 			break;
 		//Pause the game
 		case GLFW_KEY_ESCAPE:
-			this->m_paused = !this->m_paused;
+			if(!this->m_menu)
+				this->m_paused = !this->m_paused;
 			break;
 		}
 	}

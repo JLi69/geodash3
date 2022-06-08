@@ -9,9 +9,9 @@ include_directories(${CMAKE_SOURCE_DIR}/dependencies/include)
 find_package(OpenGL REQUIRED)
 
 if(${CMAKE_HOST_SYSTEM_NAME} STREQUAL "Windows")
-	set(CMAKE_CXX_FLAGS "-mwindows -DWINDOWS -O2 -static-libstdc++ -static-libgcc")
+	set(CMAKE_CXX_FLAGS "-mwindows -DWINDOWS -O2 -flto -static-libstdc++ -static-libgcc")
 else()
-	set(CMAKE_CXX_FLAGS "-O2 -static-libstdc++ -static-libgcc")
+	set(CMAKE_CXX_FLAGS "-O2 -flto -static-libstdc++ -static-libgcc")
 endif()
 
 #Create the executable
@@ -33,6 +33,9 @@ add_executable(
 	#init
 	${PROJECT_SOURCE_DIR}/src/Init/init.cpp
 
+	#Button
+	${PROJECT_SOURCE_DIR}/src/Button/Button.cpp
+
 	#open files
 	${PROJECT_SOURCE_DIR}/src/File/OpenFile.cpp
 
@@ -41,6 +44,8 @@ add_executable(
 	${PROJECT_SOURCE_DIR}/src/EngineDisplay.cpp
 	${PROJECT_SOURCE_DIR}/src/EngineKeyInput.cpp
 	${PROJECT_SOURCE_DIR}/src/EngineUpdate.cpp
+	${PROJECT_SOURCE_DIR}/src/EngineRun.cpp
+	${PROJECT_SOURCE_DIR}/src/EngineHandleMouseInput.cpp
 
 	#Gameobjects
 	${PROJECT_SOURCE_DIR}/src/GameObject/Player.cpp

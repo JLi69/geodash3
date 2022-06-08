@@ -7,14 +7,19 @@ void Geodash3::Engine::m_Update()
 	this->m_playerCube.Update(this->m_secondsToDrawFrame);
 
 	//Update the level	
-	if(this->m_levels.at(this->m_currentLevel).levelEnd >= -1.0f)
-		this->m_currentLevel++; //Once the player passed a level, load another one
-	//Player beat the game
-	if(this->m_currentLevel >= this->m_levels.size())
+	if(this->m_level.levelEnd >= -1.0f)
 	{
-		this->m_levels.at(this->m_levels.size() - 1).blocks.clear();
-		this->m_levels.at(this->m_levels.size() - 1).spikes.clear();
-		this->m_currentLevel = this->m_levels.size() - 1;
+		this->m_currentLevel++; //Once the player passed a level, load another one
+		//Load a new level	
+		if(this->m_currentLevel < this->m_resetLevels.size())
+			this->m_level = Geodash3::LoadLevel(this->m_resetLevels.at(this->m_currentLevel));	
+	}	
+	//Player beat the game
+	if(this->m_currentLevel >= this->m_resetLevels.size())
+	{
+		//this->m_resetLevels.at(this->m_resetLevels.size() - 1).blocks.clear();
+		//this->m_resetLevels.at(this->m_resetLevels.size() - 1).spikes.clear();
+		this->m_currentLevel = this->m_resetLevels.size() - 1;
 		//Player cube runs off into the sunset
 		this->m_playerCube.movement.z = -20.0f;
 	}
@@ -22,9 +27,9 @@ void Geodash3::Engine::m_Update()
 	//Update the blocks
 	bool hit = false; //Store if the player collided with a block
 
-	this->m_levels.at(this->m_currentLevel).levelEnd += 5.0f * this->m_secondsToDrawFrame;
+	this->m_level.levelEnd += 5.0f * this->m_secondsToDrawFrame;
 
-	for(auto &block : this->m_levels.at(this->m_currentLevel).blocks)
+	for(auto &block : this->m_level.blocks)
 	{
 		if(block.position.z > 1.0f)
 			continue;
@@ -41,7 +46,7 @@ void Geodash3::Engine::m_Update()
 			{
 				//Reset the player and level
 				this->m_playerCube = Geodash3::Player(glm::vec3(0.0f, -1.8f, -4.5f));
-				this->m_levels.at(this->m_currentLevel) = this->m_resetLevels.at(this->m_currentLevel);
+				this->m_level = Geodash3::LoadLevel(this->m_resetLevels.at(this->m_currentLevel));
 				return;
 			}	
 			//Player hit bottom of cube
@@ -65,7 +70,7 @@ void Geodash3::Engine::m_Update()
 	
 
 	//Update the spikes
-	for(auto &spike : this->m_levels.at(this->m_currentLevel).spikes)
+	for(auto &spike : this->m_level.spikes)
 	{
 		if(spike.position.z > 1.0f)
 			continue;
@@ -80,7 +85,7 @@ void Geodash3::Engine::m_Update()
 			{
 				//Reset the player and level
 				this->m_playerCube = Geodash3::Player(glm::vec3(0.0f, -1.8f, -4.5f));
-				this->m_levels.at(this->m_currentLevel) = this->m_resetLevels.at(this->m_currentLevel);	
+				this->m_level = Geodash3::LoadLevel(this->m_resetLevels.at(this->m_currentLevel));	
 				return;
 			}
 		}	

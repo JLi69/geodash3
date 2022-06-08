@@ -1,59 +1,8 @@
 #include "Engine.h"
-#include <chrono>
 #include <iostream>
 #include <fstream>
 #include <sstream>
 #include "File/OpenFile.h"
-
-//Main loop
-void Geodash3::Engine::Run()
-{
-	//Set the background color of the window
-	GL_CALL(glClearColor(0.0f, 0.8f, 1.0f, 1.0f));
-	//Enable the depth test
-	GL_CALL(glEnable(GL_DEPTH_TEST));
-	GL_CALL(glDepthFunc(GL_LEQUAL));
-	GL_CALL(glEnable(GL_CULL_FACE));
-
-	//Transparency
-	GL_CALL(glEnable(GL_BLEND));
-	GL_CALL(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
-
-	float avgFPS = 0.0f, //Average frames per second 
-		  frameCount = 0.0f; //Number of frames passed
-
-	while(!glfwWindowShouldClose(m_gameWindow))
-	{
-		//Begin of frame
-		std::chrono::time_point<std::chrono::system_clock> begin = std::chrono::system_clock::now();
-		
-		this->m_Display();
-		//Don't update the game scene
-		//if the game is paused
-		if(!this->m_paused)
-			this->m_Update();
-
-		//Output frames per second
-		std::cout << "Frames Per Second: " << 1.0f / this->m_secondsToDrawFrame << '\n';
-		//End of frame
-		std::chrono::time_point<std::chrono::system_clock> end = std::chrono::system_clock::now();
-		//Calculate number of seconds to draw the frame
-		std::chrono::duration<float> timePassed = end - begin;
-		this->m_secondsToDrawFrame = timePassed.count();
-		
-		//Calculate the average FPS
-		frameCount++;
-		if(frameCount != 1.0f)
-			avgFPS *= ((frameCount - 1.0f) / (frameCount));
-		avgFPS += (1.0f / this->m_secondsToDrawFrame) / frameCount;
-	}
-
-	//Output the average FPS in the game
-	std::cout << "-----------------------------------\n";
-	std::cout << "Average Frames Per Second: " << avgFPS << '\n';
-
-	glfwTerminate();
-}
 
 //Constructor
 Geodash3::Engine::Engine()
@@ -79,10 +28,11 @@ Geodash3::Engine::Engine()
 	GL_CALL(m_rect.Data(&Geodash3::rect[0], sizeof(Geodash3::rect), 3));
 
 	//Set up the shaders
-	GL_CALL(m_basicPyramid3D.CreateShader("res/shaders/vert-3d.glsl", "res/shaders/pyramid-frag.glsl"));
-	GL_CALL(m_basic3D.CreateShader("res/shaders/vert-3d.glsl", "res/shaders/basic-frag.glsl"));	
-	GL_CALL(m_shaded3D.CreateShader("res/shaders/vert-3d.glsl", "res/shaders/shaded-frag.glsl"));
-	GL_CALL(m_progressShader.CreateShader("res/shaders/vert-3d.glsl", "res/shaders/progress.glsl"));
+	GL_CALL(m_basicPyramid3D.CreateShader("res/shaders/vert-3d.glsl", "res/shaders/pyramid-frag.glsl"));		
+	GL_CALL(m_basic3D.CreateShader("res/shaders/vert-3d.glsl", "res/shaders/basic-frag.glsl"));			
+	GL_CALL(m_shaded3D.CreateShader("res/shaders/vert-3d.glsl", "res/shaders/shaded-frag.glsl"));	
+	GL_CALL(m_progressShader.CreateShader("res/shaders/vert-3d.glsl", "res/shaders/progress.glsl"));	
+	GL_CALL(m_buttonShader.CreateShader("res/shaders/vert-3d.glsl", "res/shaders/button-frag.glsl"));	
 
 	//Set up the textures
 	GL_CALL(this->m_player = TextureObj("res/textures/player.png"));
@@ -92,6 +42,7 @@ Geodash3::Engine::Engine()
 	GL_CALL(this->m_blocks[2] = TextureObj("res/textures/block3.png"));
 	GL_CALL(this->m_spike = TextureObj("res/textures/spike.png"));
 	GL_CALL(this->m_pauseScreen = TextureObj("res/textures/pause.png"));
+	GL_CALL(this->m_title = TextureObj("res/textures/title.png"));
 
 	//Set up the texture coordinates
 	GL_CALL(this->m_cubeCoords.GenBuffer());
@@ -101,22 +52,62 @@ Geodash3::Engine::Engine()
 	GL_CALL(this->m_rectCoords.GenBuffer());
 	GL_CALL(this->m_rectCoords.Data(&Geodash3::texRectCoords[0], sizeof(Geodash3::texRectCoords), 2));
 
+	//Set up the buttons
+	//Return to main menu button
+	auto goToMenuFunc = [this]()
+	{
+		this->m_menu = true;
+		this->m_level = Geodash3::LoadLevel(this->m_resetLevels.at(this->m_currentLevel));
+	};
+	this->m_gotoMenuButton = Geodash3::Button(goToMenuFunc, glm::vec2(0.0f, -0.01f), glm::vec2(0.15f * 0.11f, 0.06f * 0.11f));
+	GL_CALL(this->m_gotoMenuButton.SetButtonTex("res/textures/main-menubutton.png"));
+	//Quit button
+	this->m_quitButton = Geodash3::Button([]() { glfwTerminate(); exit(0); }, glm::vec2(0.0f, -0.025f), glm::vec2(0.15f * 0.11f, 0.06f * 0.11f));
+	GL_CALL(this->m_quitButton.SetButtonTex("res/textures/quitbutton.png"));
+	//Play button
+	this->m_playButton = Geodash3::Button([this]() { this->m_paused = false; this->m_menu = false; this->m_playerCube = Geodash3::Player(glm::vec3(0.0f, -1.8f, -4.5f)); }, glm::vec2(0.0f, -0.04f), glm::vec2(0.15f * 0.11f, 0.06f * 0.11f));
+	GL_CALL(this->m_playButton.SetButtonTex("res/textures/playbutton.png"));
+	//Change level
+	auto prevLev = [this]()
+	{
+		this->m_currentLevel--;
+		this->m_currentLevel += this->m_resetLevels.size();
+		this->m_currentLevel %= this->m_resetLevels.size();
+		this->m_level = Geodash3::LoadLevel(this->m_resetLevels.at(this->m_currentLevel));
+	};
+	auto nextLev = [this]()
+	{
+		this->m_currentLevel++;
+		this->m_currentLevel %= this->m_resetLevels.size();
+		this->m_level = Geodash3::LoadLevel(this->m_resetLevels.at(this->m_currentLevel));	
+	};
+	//Previous level button	
+	this->m_prevButton = Geodash3::Button(prevLev, glm::vec2(-0.04f, 0.0f), glm::vec2(0.04f * 0.11f, 0.08f * 0.11f));
+	GL_CALL(this->m_prevButton.SetButtonTex("res/textures/prevbutton.png"));
+	//Next level button	
+	this->m_nextButton = Geodash3::Button(nextLev, glm::vec2(0.04f, 0.0f), glm::vec2(0.04f * 0.11f, 0.08f * 0.11f));
+	GL_CALL(this->m_nextButton.SetButtonTex("res/textures/nextbutton.png"));
+
 	//Set up key input
 	glfwSetWindowUserPointer(this->m_gameWindow, this);
-	auto keyInputFunc = [](GLFWwindow* win, int key, int scancode, int action, int mods)
+	auto keyInputFunc = [](GLFWwindow *win, int key, int scancode, int action, int mods)
 	{
 		static_cast<Engine*>(glfwGetWindowUserPointer(win))->m_HandleKeyInput(win, key, scancode, action, mods);
 	};
 	glfwSetKeyCallback(m_gameWindow, keyInputFunc);
+	//Set up mouse button input
+	auto mouseInputFunc = [](GLFWwindow *win, int button, int action, int mods)
+	{
+		static_cast<Engine*>(glfwGetWindowUserPointer(win))->m_HandleMouseInput(win, button, action, mods);	
+	};
+	glfwSetMouseButtonCallback(m_gameWindow, mouseInputFunc);
 
 	//Load the level files into memory
 	bool success;
 	std::ifstream levelListFile = Geodash3::OpenFile("res/levels/level-list.txt", success);	
 	//read the level list file
 	std::string line;
-	while(std::getline(levelListFile, line))
-	{
-		this->m_levels.push_back(Geodash3::LoadLevel(line)); //Load the level into memory
-		this->m_resetLevels.push_back(Geodash3::LoadLevel(line));
-	}
+	while(std::getline(levelListFile, line))	
+		this->m_resetLevels.push_back(line);
+	this->m_level = Geodash3::LoadLevel(this->m_resetLevels.at(this->m_currentLevel));
 }

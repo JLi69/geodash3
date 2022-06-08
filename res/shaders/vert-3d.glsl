@@ -11,6 +11,8 @@ layout(location = 1) in vec2 texCoord;
 //Output texture coordinate for fragment shader
 out vec2 o_texCoord;
 layout(binding = 0) uniform sampler2D samp;
+layout(binding = 1) uniform sampler2D samp2;
+layout(binding = 2) uniform sampler2D samp3;
 
 //location in 3D space
 out vec4 fragPos;

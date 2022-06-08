@@ -1,5 +1,4 @@
 #include "Engine.h"
-
 #include <iostream>
 
 void Geodash3::Engine::m_Display()
@@ -33,9 +32,15 @@ void Geodash3::Engine::m_Display()
 		GL_CALL(glClearColor(0.0f, 0.8f, 1.0f, 1.0f));
 	}
 
+	//Matrix stack
+	//std::stack<glm::mat4> matStack;	
+	//matStack.push(m_rotationMatrix * m_viewMatrix);
+
 	//Clear the depth buffer bit and the screen
 	GL_CALL(glClear(GL_COLOR_BUFFER_BIT));
 	GL_CALL(glClear(GL_DEPTH_BUFFER_BIT));
+
+	GL_CALL(glFrontFace(GL_CW));	
 
 	//Enable the cube model
 	GL_CALL(m_cube.Enable());
@@ -44,95 +49,152 @@ void Geodash3::Engine::m_Display()
 	GL_CALL(this->m_cubeCoords.Enable());
 
 	//Draw the ground
-	GL_CALL(glFrontFace(GL_CW));
+	GL_CALL(glUniform1i(m_basic3D.GetUniformLocation("u_outline"), true));
 	//Ground texture
-	GL_CALL(this->m_ground.ActivateTexture(GL_TEXTURE0));
-	GL_CALL(glUniformMatrix4fv(m_basic3D.GetUniformLocation("u_PerspectiveMat"), 1, false, glm::value_ptr(m_perspectiveMat)));
-	m_modelViewMat = m_rotationMatrix * m_viewMatrix * glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, -3.0f, -6.0f)) * glm::scale(glm::mat4(1.0f), glm::vec3(1.0f, 1.0f, 1000.0f));
-	GL_CALL(glUniformMatrix4fv(m_basic3D.GetUniformLocation("u_ModelViewMat"), 1, false, glm::value_ptr(m_modelViewMat)));
-	//[GROUND WILL BE TEXTURED] - DELETE LATER!!!
-	GL_CALL(glUniform4f(m_basic3D.GetUniformLocation("u_Color"), 0.0f, 1.0f, 0.0f, 1.0f));
+	GL_CALL(this->m_ground.ActivateTexture(GL_TEXTURE0));	
+	m_modelViewMat = m_rotationMatrix * m_viewMatrix * glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, -3.0f, -6.0f)) * glm::scale(glm::mat4(1.0f), glm::vec3(1.0f, 1.0f, 256.0f));
+	//matStack.push(matStack.top() * glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, -3.0f, -6.0f)) * glm::scale(glm::mat4(1.0f), glm::vec3(1.0f, 1.0f, 1000.0f)));	
+	GL_CALL(glUniformMatrix4fv(m_basic3D.GetUniformLocation("u_ModelViewMat"), 1, false, glm::value_ptr(m_modelViewMat)));	
 	GL_CALL(glDrawArrays(GL_TRIANGLES, 0, 36));
 
 	//Draw the player
-	//Player texture
-	GL_CALL(this->m_player.ActivateTexture(GL_TEXTURE0));
-	m_modelViewMat = m_rotationMatrix * 
-					 m_viewMatrix * 
-					 glm::translate(glm::mat4(1.0f), this->m_playerCube.position) *
-					 glm::scale(glm::mat4(1.0f), this->m_playerCube.dimensions) *
-					 glm::rotate(glm::mat4(1.0f), this->m_playerCube.rotation.z, glm::vec3(0.0f, 0.0f, 1.0f)) *
-					 glm::rotate(glm::mat4(1.0f), this->m_playerCube.rotation.y, glm::vec3(0.0f, 1.0f, 0.0f)) *
-					 glm::rotate(glm::mat4(1.0f), this->m_playerCube.rotation.x, glm::vec3(1.0f, 0.0f, 0.0f));
-	GL_CALL(glUniformMatrix4fv(m_basic3D.GetUniformLocation("u_ModelViewMat"), 1, false, glm::value_ptr(m_modelViewMat)));
-	//[PLAYER WILL BE TEXTURED] - DELETE LATER!!!
-	GL_CALL(glUniform4f(m_basic3D.GetUniformLocation("u_Color"), 1.0f, 1.0f, 0.0f, 1.0f));
-	GL_CALL(glDrawArrays(GL_TRIANGLES, 0, 36));
+	//Don't draw the player on the main menu screen
+	if(!this->m_menu)
+	{	
+		//Player texture
+		GL_CALL(this->m_player.ActivateTexture(GL_TEXTURE0));
+		m_modelViewMat = m_rotationMatrix * 
+		   				 m_viewMatrix * 
+		   				 glm::translate(glm::mat4(1.0f), this->m_playerCube.position) *
+		   				 glm::scale(glm::mat4(1.0f), this->m_playerCube.dimensions) *
+		   				 glm::rotate(glm::mat4(1.0f), this->m_playerCube.rotation.z, glm::vec3(0.0f, 0.0f, 1.0f)) *
+		   				 glm::rotate(glm::mat4(1.0f), this->m_playerCube.rotation.y, glm::vec3(0.0f, 1.0f, 0.0f)) *
+		   				 glm::rotate(glm::mat4(1.0f), this->m_playerCube.rotation.x, glm::vec3(1.0f, 0.0f, 0.0f));
+		GL_CALL(glUniformMatrix4fv(m_basic3D.GetUniformLocation("u_ModelViewMat"), 1, false, glm::value_ptr(m_modelViewMat)));	
+		GL_CALL(glDrawArrays(GL_TRIANGLES, 0, 36));
+	}
 
 	//Display the block	
-	GL_CALL(glUseProgram(this->m_shaded3D.GetId()));
-	GL_CALL(glUniformMatrix4fv(this->m_shaded3D.GetUniformLocation("u_PerspectiveMat"), 1, false, glm::value_ptr(this->m_perspectiveMat)));
-	for(auto block : this->m_levels.at(this->m_currentLevel).blocks)
+	GL_CALL(glUseProgram(this->m_shaded3D.GetId()));	
+	this->m_currentBlockType = -1;
+	for(auto block : this->m_level.blocks)
 	{
-		if(block.position.z < -64.0f || block.position.z > 1.0f)
+		if((block.position.z < -64.0f || block.position.z > 1.0f) && !this->m_menu)
 			continue;
-
-		GL_CALL(this->m_blocks[block.blockType].ActivateTexture(GL_TEXTURE0));
+		
+		//Set the texture but only change the texture
+		//when we hit a new block so that we minimize
+		//OpenGL operations
+		if(block.blockType != this->m_currentBlockType)
+		{
+			this->m_currentBlockType = block.blockType;
+			GL_CALL(this->m_blocks[this->m_currentBlockType].ActivateTexture(GL_TEXTURE0));
+		}	
 
 		m_modelViewMat = m_rotationMatrix * 
 					 m_viewMatrix * 
 					 glm::translate(glm::mat4(1.0f), block.position) *
-					 glm::scale(glm::mat4(1.0f), block.dimensions);
-		GL_CALL(glUniformMatrix4fv(m_shaded3D.GetUniformLocation("u_ModelViewMat"), 1, false, glm::value_ptr(m_modelViewMat)));	
-		
-		GL_CALL(glUniform4f(m_shaded3D.GetUniformLocation("u_Color"), 0.6f, 0.6f, 0.6f, 1.0f));
+					 glm::scale(glm::mat4(1.0f), block.dimensions);	
+
+		if(this->m_menu)
+			m_modelViewMat *= glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, 27.0f / block.dimensions.z));
+
+		GL_CALL(glUniformMatrix4fv(m_shaded3D.GetUniformLocation("u_ModelViewMat"), 1, false, glm::value_ptr(m_modelViewMat)));		
 		GL_CALL(glDrawArrays(GL_TRIANGLES, 0, 36));
 	}
 
 	//Display the spikes
-	//Spike texture
-	GL_CALL(this->m_spike.ActivateTexture(GL_TEXTURE0));
 	GL_CALL(this->m_pyrCoords.Enable());
 	GL_CALL(glFrontFace(GL_CCW));
 	GL_CALL(this->m_pyramid.Enable());
-	GL_CALL(glUseProgram(m_basicPyramid3D.GetId()));
-	GL_CALL(glUniformMatrix4fv(m_basicPyramid3D.GetUniformLocation("u_PerspectiveMat"), 1, false, glm::value_ptr(this->m_perspectiveMat)));
-
-	for(auto spike : this->m_levels.at(this->m_currentLevel).spikes)
+	GL_CALL(glUseProgram(m_basicPyramid3D.GetId()));	
+	for(auto spike : this->m_level.spikes)
 	{
-		if(spike.position.z < -64.0f)
+		if((spike.position.z < -64.0f || spike.position.z > 1.0f) && !this->m_menu)
 			continue;
 
 		m_modelViewMat = m_rotationMatrix *
 						 m_viewMatrix *
 						 glm::translate(glm::mat4(1.0f), spike.position) *
 						 glm::scale(glm::mat4(1.0f), spike.dimensions);
-		GL_CALL(glUniformMatrix4fv(m_basicPyramid3D.GetUniformLocation("u_ModelViewMat"), 1, false, glm::value_ptr(m_modelViewMat)));
-		GL_CALL(glUniform4f(m_basicPyramid3D.GetUniformLocation("u_Color"), 1.0f, 0.0f, 0.0f, 1.0f));
-		GL_CALL(glDrawArrays(GL_TRIANGLES, 0, 18));
-	}
+		
+		if(this->m_menu)
+			m_modelViewMat *= glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, 27.0f / spike.dimensions.z));
 
-	//Draw the progress bar
+		GL_CALL(glUniformMatrix4fv(m_basicPyramid3D.GetUniformLocation("u_ModelViewMat"), 1, false, glm::value_ptr(m_modelViewMat)));	
+		GL_CALL(glDrawArrays(GL_TRIANGLES, 0, 18));
+	}	
+
 	GL_CALL(glFrontFace(GL_CW));
 	GL_CALL(this->m_rect.Enable());
-	GL_CALL(glUseProgram(m_progressShader.GetId()));
-	GL_CALL(glUniformMatrix4fv(m_progressShader.GetUniformLocation("u_PerspectiveMat"), 1, false, glm::value_ptr(this->m_perspectiveMat)));
-	GL_CALL(glUniform1f(m_progressShader.GetUniformLocation("u_percentage"), 1.0f - (-this->m_levels.at(this->m_currentLevel).levelEnd - 1.0f) / (this->m_levels.at(this->m_currentLevel).levelLength - 26.0f)));
-	m_modelViewMat = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.059f, -0.12f)) *
-					 glm::scale(glm::mat4(1.0f), glm::vec3(0.1f, 0.0015f, 1.0f));
-	GL_CALL(glUniformMatrix4fv(m_progressShader.GetUniformLocation("u_ModelViewMat"), 1, false, glm::value_ptr(m_modelViewMat)));
-	GL_CALL(glDrawArrays(GL_TRIANGLES, 0, 6));
+	//Draw the progress bar
+	if(!this->m_menu)
+	{	
+		GL_CALL(glUseProgram(m_progressShader.GetId()));	
+		GL_CALL(glUniform1f(m_progressShader.GetUniformLocation("u_percentage"), 1.0f - (-this->m_level.levelEnd - 1.0f) / (this->m_level.levelLength - 26.0f)));
+		m_modelViewMat = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.059f, -0.12f)) *
+		   				glm::scale(glm::mat4(1.0f), glm::vec3(0.1f, 0.0015f, 1.0f));
+		GL_CALL(glUniformMatrix4fv(m_progressShader.GetUniformLocation("u_ModelViewMat"), 1, false, glm::value_ptr(m_modelViewMat)));
+		GL_CALL(glDrawArrays(GL_TRIANGLES, 0, 6));
+	}
 
-	//Draw the pause screen
-	if(this->m_paused)
+	GL_CALL(this->m_rectCoords.Enable());
+	//Draw the level select menu
+	if(this->m_menu)
 	{
-		GL_CALL(this->m_rectCoords.Enable());
-		GL_CALL(this->m_pauseScreen.ActivateTexture(GL_TEXTURE0));
+		//Draw the title
+		GL_CALL(this->m_title.ActivateTexture(GL_TEXTURE0));
 		GL_CALL(glUseProgram(m_basic3D.GetId()));
-		GL_CALL(glUniformMatrix4fv(m_basic3D.GetUniformLocation("u_PerspectiveMat"), 1, false, glm::value_ptr(this->m_perspectiveMat)));	
+		GL_CALL(glUniform1i(m_basic3D.GetUniformLocation("u_outline"), false));
+		m_modelViewMat = glm::translate(glm::mat4(1.0f), glm::vec3(-0.06f, 0.05f, -0.12f)) *
+						 glm::scale(glm::mat4(1.0f), glm::vec3(0.05f, 0.05f * 320.0f / 1920.0f, 0.1f));
+		GL_CALL(glUniformMatrix4fv(m_basic3D.GetUniformLocation("u_ModelViewMat"), 1, false, glm::value_ptr(m_modelViewMat)));
+		GL_CALL(glDrawArrays(GL_TRIANGLES, 0, 6));
+
+		//Display the buttons
+		//Play button
+		GL_CALL(glUseProgram(this->m_buttonShader.GetId()));
+		GL_CALL(this->m_playButton.ActivateButtonTex());
+		this->m_playButton.SetModelViewMat(this->m_modelViewMat);
+		GL_CALL(glUniformMatrix4fv(this->m_buttonShader.GetUniformLocation("u_ModelViewMat"), 1, false, glm::value_ptr(m_modelViewMat)));
+		GL_CALL(glUniform1i(this->m_buttonShader.GetUniformLocation("u_hovering"), this->m_playButton.MouseHovering(this->m_gameWindow, this->m_mouseX, this->m_mouseY)));
+		glDrawArrays(GL_TRIANGLES, 0, 6);
+		//Prev button		
+		GL_CALL(this->m_prevButton.ActivateButtonTex());
+		this->m_prevButton.SetModelViewMat(this->m_modelViewMat);
+		GL_CALL(glUniformMatrix4fv(this->m_buttonShader.GetUniformLocation("u_ModelViewMat"), 1, false, glm::value_ptr(m_modelViewMat)));
+		GL_CALL(glUniform1i(this->m_buttonShader.GetUniformLocation("u_hovering"), this->m_prevButton.MouseHovering(this->m_gameWindow, this->m_mouseX, this->m_mouseY)));
+		glDrawArrays(GL_TRIANGLES, 0, 6);
+		//Next button	
+		GL_CALL(this->m_nextButton.ActivateButtonTex());
+		this->m_nextButton.SetModelViewMat(this->m_modelViewMat);
+		GL_CALL(glUniformMatrix4fv(this->m_buttonShader.GetUniformLocation("u_ModelViewMat"), 1, false, glm::value_ptr(m_modelViewMat)));
+		GL_CALL(glUniform1i(this->m_buttonShader.GetUniformLocation("u_hovering"), this->m_nextButton.MouseHovering(this->m_gameWindow, this->m_mouseX, this->m_mouseY)));
+		glDrawArrays(GL_TRIANGLES, 0, 6);
+	}
+	//Draw the pause screen	
+	else if(this->m_paused)
+	{	
+		GL_CALL(this->m_pauseScreen.ActivateTexture(GL_TEXTURE0));
+		GL_CALL(glUseProgram(m_basic3D.GetId()));	
 		m_modelViewMat = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, -0.12f)) *
 						 glm::scale(glm::mat4(1.0f), glm::vec3(0.12f, 0.0675f, 0.1f));
 		GL_CALL(glUniformMatrix4fv(m_basic3D.GetUniformLocation("u_ModelViewMat"), 1, false, glm::value_ptr(m_modelViewMat)));
+		GL_CALL(glDrawArrays(GL_TRIANGLES, 0, 6));
+	
+		//Draw the buttons
+		GL_CALL(glUseProgram(m_buttonShader.GetId()));	
+		//Return to main menu button
+		GL_CALL(this->m_gotoMenuButton.ActivateButtonTex());
+		GL_CALL(this->m_gotoMenuButton.SetModelViewMat(this->m_modelViewMat));
+		GL_CALL(glUniformMatrix4fv(m_buttonShader.GetUniformLocation("u_ModelViewMat"), 1, false, glm::value_ptr(this->m_modelViewMat)));
+		GL_CALL(glUniform1i(m_buttonShader.GetUniformLocation("u_hovering"), this->m_gotoMenuButton.MouseHovering(this->m_gameWindow, this->m_mouseX, this->m_mouseY)));
+		GL_CALL(glDrawArrays(GL_TRIANGLES, 0, 6));
+		//Quit button
+		GL_CALL(this->m_quitButton.ActivateButtonTex());
+		GL_CALL(this->m_quitButton.SetModelViewMat(this->m_modelViewMat));
+		GL_CALL(glUniformMatrix4fv(m_buttonShader.GetUniformLocation("u_ModelViewMat"), 1, false, glm::value_ptr(this->m_modelViewMat)));
+		GL_CALL(glUniform1i(m_buttonShader.GetUniformLocation("u_hovering"), this->m_quitButton.MouseHovering(this->m_gameWindow, this->m_mouseX, this->m_mouseY)));
 		GL_CALL(glDrawArrays(GL_TRIANGLES, 0, 6));
 	}
 
