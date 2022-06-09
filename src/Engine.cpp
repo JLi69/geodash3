@@ -82,10 +82,10 @@ Geodash3::Engine::Engine()
 		this->m_level = Geodash3::LoadLevel(this->m_resetLevels.at(this->m_currentLevel));	
 	};
 	//Previous level button	
-	this->m_prevButton = Geodash3::Button(prevLev, glm::vec2(-0.04f, 0.0f), glm::vec2(0.04f * 0.11f, 0.08f * 0.11f));
+	this->m_prevButton = Geodash3::Button(prevLev, glm::vec2(-0.04f, 0.0f), glm::vec2(0.03f * 0.11f, 0.06f * 0.11f));
 	GL_CALL(this->m_prevButton.SetButtonTex("res/textures/prevbutton.png"));
 	//Next level button	
-	this->m_nextButton = Geodash3::Button(nextLev, glm::vec2(0.04f, 0.0f), glm::vec2(0.04f * 0.11f, 0.08f * 0.11f));
+	this->m_nextButton = Geodash3::Button(nextLev, glm::vec2(0.04f, 0.0f), glm::vec2(0.03f * 0.11f, 0.06f * 0.11f));
 	GL_CALL(this->m_nextButton.SetButtonTex("res/textures/nextbutton.png"));
 
 	//Set up key input
