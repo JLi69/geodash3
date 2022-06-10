@@ -9,8 +9,8 @@ I wanted to create this game as a way to test my knowledge with OpenGL so far (s
 To compile the project just run the following commands:
 
 ```
-cmake -S geodash-3d -B geodash-3d/build
-cd geodash-3d/build
+cmake -S geodash3 -B geodash-3d/build
+cd geodash3/build
 make
 ```
 
