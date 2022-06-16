@@ -65,6 +65,7 @@ namespace Geodash3
 		//Texture coordinates
 		//Texture coordinates for a cube
 		TextureCoords m_cubeCoords = TextureCoords(),
+					  m_cubeCoordsTop = TextureCoords(),
 					  m_pyrCoords = TextureCoords(),
 					  m_rectCoords = TextureCoords();
 		

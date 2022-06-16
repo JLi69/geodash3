@@ -32,10 +32,6 @@ void Geodash3::Engine::m_Display()
 		GL_CALL(glClearColor(0.0f, 0.8f, 1.0f, 1.0f));
 	}
 
-	//Matrix stack
-	//std::stack<glm::mat4> matStack;	
-	//matStack.push(m_rotationMatrix * m_viewMatrix);
-
 	//Clear the depth buffer bit and the screen
 	GL_CALL(glClear(GL_COLOR_BUFFER_BIT));
 	GL_CALL(glClear(GL_DEPTH_BUFFER_BIT));
@@ -59,6 +55,8 @@ void Geodash3::Engine::m_Display()
 	GL_CALL(glUniformMatrix4fv(m_basic3D.GetUniformLocation("u_ModelViewMat"), 1, false, glm::value_ptr(m_modelViewMat)));	
 	GL_CALL(glDrawArrays(GL_TRIANGLES, 0, 36));
 
+	//Set the texture coordinates for the cube
+	GL_CALL(this->m_cubeCoordsTop.Enable());
 	//Draw the player
 	//Don't draw the player on the main menu screen
 	if(!this->m_menu)

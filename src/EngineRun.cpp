@@ -33,6 +33,7 @@ void Geodash3::Engine::Run()
 	//Set the spike texture so that we reduce OpenGL calls in the main cloop	
 	GL_CALL(this->m_spike.ActivateTexture(GL_TEXTURE1));
 
+	float timePassedLastOutput = 0.0f;
 	while(!glfwWindowShouldClose(m_gameWindow))
 	{
 		//Begin of frame
@@ -49,12 +50,17 @@ void Geodash3::Engine::Run()
 			this->m_Update();
 
 		//Output frames per second
-		std::cout << "Frames Per Second: " << 1.0f / this->m_secondsToDrawFrame << '\n';
+		if(timePassedLastOutput >= 1.0f)
+		{
+			std::cout << "Frames Per Second: " << floorf(1.0f / this->m_secondsToDrawFrame) << '\n';
+			timePassedLastOutput = 0.0f;	
+		}	
 		//End of frame
 		std::chrono::time_point<std::chrono::system_clock> end = std::chrono::system_clock::now();
 		//Calculate number of seconds to draw the frame
 		std::chrono::duration<float> timePassed = end - begin;
-		this->m_secondsToDrawFrame = timePassed.count();	
+		this->m_secondsToDrawFrame = timePassed.count();
+		timePassedLastOutput += this->m_secondsToDrawFrame;
 		//Calculate the average FPS
 		frameCount++;
 		if(frameCount != 1.0f)

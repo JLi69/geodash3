@@ -47,6 +47,8 @@ Geodash3::Engine::Engine()
 	//Set up the texture coordinates
 	GL_CALL(this->m_cubeCoords.GenBuffer());
 	GL_CALL(this->m_cubeCoords.Data(&Geodash3::texCubeCoords[0], sizeof(Geodash3::texCubeCoords), 2));
+	GL_CALL(this->m_cubeCoordsTop.GenBuffer());
+	GL_CALL(this->m_cubeCoordsTop.Data(&Geodash3::texCubCoordsTop[0], sizeof(Geodash3::texCubCoordsTop), 2));
 	GL_CALL(this->m_pyrCoords.GenBuffer());
 	GL_CALL(this->m_pyrCoords.Data(&Geodash3::texPyrCoords[0], sizeof(Geodash3::texPyrCoords), 2));
 	GL_CALL(this->m_rectCoords.GenBuffer());
