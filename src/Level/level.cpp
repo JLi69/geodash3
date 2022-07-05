@@ -60,6 +60,13 @@ Geodash3::Level Geodash3::LoadLevel(std::string levelFilePath)
 														-1.75f + 0.5f * (float)(11 - currentLine % 12),
 														-(float)i * 0.5f - 32.0f)));
 				break;
+			//Bouncy block
+			case '&':
+				loaded.blocks.push_back(Geodash3::Block(glm::vec3(floorf((float)currentLine / 12.0f) * 0.5f - 0.75f,
+																  -1.75f + 0.5f * (float)(11 - currentLine % 12),
+																  -(float)i * 0.5f - 32.0f)));
+				loaded.blocks.at(loaded.blocks.size() - 1).blockType = 3;	
+				break;
 			//Nothing
 			default:
 				break;

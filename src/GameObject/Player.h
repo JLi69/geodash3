@@ -13,7 +13,8 @@ namespace Geodash3
 	public:
 		bool falling = false,
 			 canJump = true, //Stores if the player can jump
-			 isJumping = false; //Stores if the player is jumping
+			 isJumping = false, //Stores if the player is jumping
+			 bouncing = false; //Stores if the player is bouncing
 
 		void Update(float secToDrawFrame); //Update the player object
 

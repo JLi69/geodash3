@@ -18,18 +18,6 @@ void Geodash3::Engine::Run()
 	float avgFPS = 0.0f, //Average frames per second 
 		  frameCount = 0.0f; //Number of frames passed
 
-	//Set the perspective matrix for all the shaders before the main loop
-	//so that we minimize OpenGL calls within the main loop
-	GL_CALL(glUseProgram(m_basicPyramid3D.GetId()));
-	GL_CALL(glUniformMatrix4fv(m_basicPyramid3D.GetUniformLocation("u_PerspectiveMat"), 1, false, glm::value_ptr(this->m_perspectiveMat)));
-	GL_CALL(glUseProgram(m_basic3D.GetId()));	
-	GL_CALL(glUniformMatrix4fv(m_basic3D.GetUniformLocation("u_PerspectiveMat"), 1, false, glm::value_ptr(m_perspectiveMat)));
-	GL_CALL(glUseProgram(m_shaded3D.GetId()));	
-	GL_CALL(glUniformMatrix4fv(this->m_shaded3D.GetUniformLocation("u_PerspectiveMat"), 1, false, glm::value_ptr(this->m_perspectiveMat)));
-	GL_CALL(glUseProgram(m_progressShader.GetId()));	
-	GL_CALL(glUniformMatrix4fv(m_progressShader.GetUniformLocation("u_PerspectiveMat"), 1, false, glm::value_ptr(this->m_perspectiveMat)));
-	GL_CALL(glUseProgram(m_buttonShader.GetId()));	
-	GL_CALL(glUniformMatrix4fv(m_buttonShader.GetUniformLocation("u_PerspectiveMat"), 1, false, glm::value_ptr(this->m_perspectiveMat)));	
 	//Set the spike texture so that we reduce OpenGL calls in the main cloop	
 	GL_CALL(this->m_spike.ActivateTexture(GL_TEXTURE1));
 

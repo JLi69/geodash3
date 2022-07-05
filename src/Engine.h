@@ -57,7 +57,7 @@ namespace Geodash3
 		//Textures
 		TextureObj m_player,
 				   m_ground,
-				   m_blocks[3],
+				   m_blocks[4],
 				   m_spike,
 				   m_pauseScreen,
 				   m_title;
@@ -98,6 +98,8 @@ namespace Geodash3
 		//Handle mouse input
 		void m_HandleMouseInput(GLFWwindow *win, int button, int action, int mods);
 
+		//When the window gets resized, do this
+		void m_OnWindowResize(GLFWwindow *win, int newWidth, int newHeight);
 		//RGB enabled
 		bool m_rgbEnabled = false;
 		//Render game objects onto the screen

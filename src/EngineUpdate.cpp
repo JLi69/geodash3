@@ -38,7 +38,10 @@ void Geodash3::Engine::m_Update()
 		if(Geodash3::Collider::Colliding(this->m_playerCube.getCollider(), block.getCollider()))
 		{
 			hit = true;
-			this->m_playerCube.canJump = true;	
+			this->m_playerCube.canJump = true;			
+			this->m_playerCube.movement.y = 0.0f;
+			this->m_playerCube.rotation.x = 0.0f;	
+			
 			//Player hits the cube head on	
 			if(this->m_playerCube.position.z <= block.position.z + block.dimensions.z + this->m_playerCube.dimensions.z &&
 				this->m_playerCube.position.y > block.position.y - block.dimensions.y &&
@@ -58,11 +61,17 @@ void Geodash3::Engine::m_Update()
 			}
 			//Player fell on top of the cube
 			if (this->m_playerCube.falling)
-				this->m_playerCube.position.y = block.position.y + this->m_playerCube.dimensions.y + block.dimensions.y;
+			{	
+				this->m_playerCube.position.y = block.position.y + this->m_playerCube.dimensions.y + block.dimensions.y;	
+				//Check if it is a bouncy cube
+				if(block.blockType == 3)
+				{
+					this->m_playerCube.bouncing = true;
+					this->m_playerCube.position.y += 0.2f;	
+				}		
+			}
 
 			this->m_playerCube.falling = false;
-			this->m_playerCube.movement.y = 0.0f;
-			this->m_playerCube.rotation.x = 0.0f;
 		}
 
 		block.Update(this->m_secondsToDrawFrame);

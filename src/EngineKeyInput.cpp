@@ -14,7 +14,10 @@ void Geodash3::Engine::m_HandleKeyInput(GLFWwindow* win, int key, int scancode, 
 			break;
 		//JUMP
 		case GLFW_KEY_SPACE:
-			this->m_playerCube.isJumping = true;	
+			this->m_playerCube.isJumping = true;
+			//Start the game if on the main menu
+			if(this->m_paused && this->m_menu)
+				this->m_playButton.Click();	
 			break;
 		//Toggle RGB background
 		case GLFW_KEY_T:
@@ -25,6 +28,15 @@ void Geodash3::Engine::m_HandleKeyInput(GLFWwindow* win, int key, int scancode, 
 			if(!this->m_menu)
 				this->m_paused = !this->m_paused;
 			break;
+		//Use the keys to move between levels on the menu
+		case GLFW_KEY_LEFT:
+			if(this->m_paused && this->m_menu)
+				this->m_prevButton.Click();
+			break;
+		case GLFW_KEY_RIGHT:
+			if(this->m_paused && this->m_menu)
+				this->m_nextButton.Click();
+			break;	
 		}
 	}
 	else if(action == GLFW_RELEASE)

@@ -2,3 +2,4 @@ res/levels/level0.lvl
 res/levels/level1.lvl
 res/levels/level2.lvl
 res/levels/level3.lvl
+res/levels/level4.lvl

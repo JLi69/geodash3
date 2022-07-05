@@ -5,7 +5,7 @@ void Geodash3::Engine::m_Display()
 {
 	//Update the view matrix
 	if(this->m_playerCube.position.y > -0.4f)
-		this->m_viewMatrix = glm::mat4(1.0f) * glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, -0.8f - (this->m_playerCube.position.y + 0.4f) * 0.9f, 1.5f)); 
+		this->m_viewMatrix = glm::mat4(1.0f) * glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, -0.8f - (this->m_playerCube.position.y + 0.4f), 1.5f)); 
 	else
 		this->m_viewMatrix = glm::mat4(1.0f) * glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, -0.8f, 1.5f));
 
@@ -40,7 +40,10 @@ void Geodash3::Engine::m_Display()
 
 	//Enable the cube model
 	GL_CALL(m_cube.Enable());
+	
 	GL_CALL(glUseProgram(m_basic3D.GetId()));
+	GL_CALL(glUniformMatrix4fv(m_basic3D.GetUniformLocation("u_PerspectiveMat"), 1, false, glm::value_ptr(m_perspectiveMat)));	
+
 	//Set the texture coordinates for the cube
 	GL_CALL(this->m_cubeCoords.Enable());
 
@@ -76,6 +79,8 @@ void Geodash3::Engine::m_Display()
 
 	//Display the block	
 	GL_CALL(glUseProgram(this->m_shaded3D.GetId()));	
+	GL_CALL(glUniformMatrix4fv(this->m_shaded3D.GetUniformLocation("u_PerspectiveMat"), 1, false, glm::value_ptr(this->m_perspectiveMat)));	
+
 	this->m_currentBlockType = -1;
 	for(auto block : this->m_level.blocks)
 	{
@@ -106,8 +111,12 @@ void Geodash3::Engine::m_Display()
 	//Display the spikes
 	GL_CALL(this->m_pyrCoords.Enable());
 	GL_CALL(glFrontFace(GL_CCW));
-	GL_CALL(this->m_pyramid.Enable());
-	GL_CALL(glUseProgram(m_basicPyramid3D.GetId()));	
+	
+	GL_CALL(this->m_pyramid.Enable());	
+
+	GL_CALL(glUseProgram(m_basicPyramid3D.GetId()));
+	GL_CALL(glUniformMatrix4fv(m_basicPyramid3D.GetUniformLocation("u_PerspectiveMat"), 1, false, glm::value_ptr(this->m_perspectiveMat)));
+	
 	for(auto spike : this->m_level.spikes)
 	{
 		if((spike.position.z < -64.0f || spike.position.z > 1.0f) && !this->m_menu)
@@ -130,7 +139,8 @@ void Geodash3::Engine::m_Display()
 	//Draw the progress bar
 	if(!this->m_menu)
 	{	
-		GL_CALL(glUseProgram(m_progressShader.GetId()));	
+		GL_CALL(glUseProgram(m_progressShader.GetId()));
+		GL_CALL(glUniformMatrix4fv(m_progressShader.GetUniformLocation("u_PerspectiveMat"), 1, false, glm::value_ptr(this->m_perspectiveMat)));
 		GL_CALL(glUniform1f(m_progressShader.GetUniformLocation("u_percentage"), 1.0f - (-this->m_level.levelEnd - 1.0f) / (this->m_level.levelLength - 26.0f)));
 		m_modelViewMat = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.059f, -0.12f)) *
 		   				glm::scale(glm::mat4(1.0f), glm::vec3(0.1f, 0.0015f, 1.0f));
@@ -154,6 +164,8 @@ void Geodash3::Engine::m_Display()
 		//Display the buttons
 		//Play button
 		GL_CALL(glUseProgram(this->m_buttonShader.GetId()));
+		GL_CALL(glUniformMatrix4fv(m_buttonShader.GetUniformLocation("u_PerspectiveMat"), 1, false, glm::value_ptr(this->m_perspectiveMat)));	
+
 		GL_CALL(this->m_playButton.ActivateButtonTex());
 		this->m_playButton.SetModelViewMat(this->m_modelViewMat);
 		GL_CALL(glUniformMatrix4fv(this->m_buttonShader.GetUniformLocation("u_ModelViewMat"), 1, false, glm::value_ptr(m_modelViewMat)));
@@ -178,12 +190,13 @@ void Geodash3::Engine::m_Display()
 		GL_CALL(this->m_pauseScreen.ActivateTexture(GL_TEXTURE0));
 		GL_CALL(glUseProgram(m_basic3D.GetId()));	
 		m_modelViewMat = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, -0.12f)) *
-						 glm::scale(glm::mat4(1.0f), glm::vec3(0.12f, 0.0675f, 0.1f));
+						 glm::scale(glm::mat4(1.0f), glm::vec3(0.12f, 0.0675f, 0.1f));		
 		GL_CALL(glUniformMatrix4fv(m_basic3D.GetUniformLocation("u_ModelViewMat"), 1, false, glm::value_ptr(m_modelViewMat)));
 		GL_CALL(glDrawArrays(GL_TRIANGLES, 0, 6));
 	
 		//Draw the buttons
-		GL_CALL(glUseProgram(m_buttonShader.GetId()));	
+		GL_CALL(glUseProgram(m_buttonShader.GetId()));
+		GL_CALL(glUniformMatrix4fv(m_buttonShader.GetUniformLocation("u_PerspectiveMat"), 1, false, glm::value_ptr(this->m_perspectiveMat)));
 		//Return to main menu button
 		GL_CALL(this->m_gotoMenuButton.ActivateButtonTex());
 		GL_CALL(this->m_gotoMenuButton.SetModelViewMat(this->m_modelViewMat));

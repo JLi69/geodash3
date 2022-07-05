@@ -46,6 +46,7 @@ add_executable(
 	${PROJECT_SOURCE_DIR}/src/EngineUpdate.cpp
 	${PROJECT_SOURCE_DIR}/src/EngineRun.cpp
 	${PROJECT_SOURCE_DIR}/src/EngineHandleMouseInput.cpp
+	${PROJECT_SOURCE_DIR}/src/EngineOnWinResize.cpp
 
 	#Gameobjects
 	${PROJECT_SOURCE_DIR}/src/GameObject/Player.cpp

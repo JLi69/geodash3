@@ -8,13 +8,20 @@ void Geodash3::Player::Update(float secToDrawFrame)
 		this->position.y += 0.2f;
 		this->movement.y = 8.0f;
 	}
+	//Bounce (more powerful than jump)
+	if(this->bouncing)
+	{
+		this->position.y += 0.2f;
+		this->movement.y = 16.0f;
+		this->bouncing = false;
+	}
 
 	//Move the player
 	this->position += this->movement * secToDrawFrame;
 	//Move the collider
 	this->m_collider.position = this->position;
 	this->m_collider.position.y -= 0.05f;
-	
+
 	//Player is above the ground, have gravity affect them
 	if(this->position.y > -1.8f)
 		this->falling = true;
@@ -26,6 +33,9 @@ void Geodash3::Player::Update(float secToDrawFrame)
 		this->m_gravity = 30.0f;
 		this->movement.y -= this->m_gravity * secToDrawFrame;
 		
+		if(this->movement.y < -15.0f)
+			this->movement.y = -15.0f;	
+
 		//Have the player spin
 		this->rotation.x += 12.0f * secToDrawFrame;
 	}
