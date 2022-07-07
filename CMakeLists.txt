@@ -53,6 +53,7 @@ add_executable(
 	${PROJECT_SOURCE_DIR}/src/GameObject/Block.cpp
 	${PROJECT_SOURCE_DIR}/src/GameObject/Spike.cpp
 	${PROJECT_SOURCE_DIR}/src/GameObject/Collider.cpp
+	${PROJECT_SOURCE_DIR}/src/GameObject/DeathParticle.cpp
 
 	#Level loading
 	${PROJECT_SOURCE_DIR}/src/Level/level.cpp

@@ -3,6 +3,23 @@
 
 void Geodash3::Engine::m_Update()
 {
+	//Update the death particles
+	for(auto &deathPart : this->m_deathParticles)
+		deathPart.Update(this->m_secondsToDrawFrame);
+	//Reset the level once all the death particles are gone
+	if(this->m_deathParticles.size() > 0)
+		if(this->m_deathParticles.at(0).distTravelled >= 4.0f)
+		{	
+			this->m_playerCube = Geodash3::Player(glm::vec3(0.0f, -1.8f, -4.5f));
+			this->m_playerCube.dead = false;
+			this->m_level = Geodash3::LoadLevel(this->m_resetLevels.at(this->m_currentLevel));	
+			this->m_deathParticles.clear();	
+		}
+
+	//Don't update the scene if the player is dead
+	if(this->m_playerCube.dead)
+		return;
+
 	//Update the player
 	this->m_playerCube.Update(this->m_secondsToDrawFrame);
 
@@ -48,9 +65,22 @@ void Geodash3::Engine::m_Update()
 				this->m_playerCube.position.y < block.position.y + block.dimensions.y)
 			{
 				//Reset the player and level
-				this->m_playerCube = Geodash3::Player(glm::vec3(0.0f, -1.8f, -4.5f));
-				this->m_level = Geodash3::LoadLevel(this->m_resetLevels.at(this->m_currentLevel));
-				return;
+				//this->m_playerCube = Geodash3::Player(glm::vec3(0.0f, -1.8f, -4.5f));
+				//this->m_level = Geodash3::LoadLevel(this->m_resetLevels.at(this->m_currentLevel));
+				this->m_playerCube.dead = true;	
+				block.Update(this->m_secondsToDrawFrame);	
+				
+				//Create the death particles
+				for(int i = 0; i < 32; i++)
+				{
+					float rotation1 = float(rand() % 256) / 255.0f * 6.28f,
+						  rotation2 = float(rand() % 256) / 255.0f * 6.28f,
+						  speed = 4.0f;
+					glm::vec3 mov = glm::vec3(speed * cosf(rotation1) * cosf(rotation2), speed * cosf(rotation1) * sinf(rotation2), speed * sinf(rotation1));
+					this->m_deathParticles.push_back(Geodash3::DeathParticle(this->m_playerCube.position, mov));
+				}
+
+				continue;
 			}	
 			//Player hit bottom of cube
 			if(this->m_playerCube.position.y < block.position.y)
@@ -82,7 +112,7 @@ void Geodash3::Engine::m_Update()
 	for(auto &spike : this->m_level.spikes)
 	{
 		if(spike.position.z > 1.0f)
-			continue;
+			continue;	
 
 		spike.Update(this->m_secondsToDrawFrame);
 
@@ -93,9 +123,19 @@ void Geodash3::Engine::m_Update()
 			if(Geodash3::Collider::Colliding(this->m_playerCube.getCollider(), spike.colliders[i]))
 			{
 				//Reset the player and level
-				this->m_playerCube = Geodash3::Player(glm::vec3(0.0f, -1.8f, -4.5f));
-				this->m_level = Geodash3::LoadLevel(this->m_resetLevels.at(this->m_currentLevel));	
-				return;
+				//this->m_playerCube = Geodash3::Player(glm::vec3(0.0f, -1.8f, -4.5f));
+				//this->m_level = Geodash3::LoadLevel(this->m_resetLevels.at(this->m_currentLevel));	
+				this->m_playerCube.dead = true;		
+				//Create the death particles
+				for(int i = 0; i < 32; i++)
+				{
+					float rotation1 = float(rand() % 256) / 255.0f * 6.28f,
+						  rotation2 = float(rand() % 256) / 255.0f * 6.28f,
+						  speed = 4.0f;
+					glm::vec3 mov = glm::vec3(speed * cosf(rotation1) * cosf(rotation2), speed * cosf(rotation1) * sinf(rotation2), speed * sinf(rotation1));
+					this->m_deathParticles.push_back(Geodash3::DeathParticle(this->m_playerCube.position, mov));
+				}		
+				//return;
 			}
 		}	
 	}	

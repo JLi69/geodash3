@@ -53,8 +53,11 @@ Geodash3::Engine::Engine()
 	//Return to main menu button
 	auto goToMenuFunc = [this]()
 	{
+		//Reset the player's position
+		this->m_playerCube = Geodash3::Player(glm::vec3(0.0f, -1.8f, -4.5f));
 		this->m_menu = true;
 		this->m_level = Geodash3::LoadLevel(this->m_resetLevels.at(this->m_currentLevel));
+		this->m_deathParticles.clear();	
 	};
 	this->m_gotoMenuButton = Geodash3::Button(goToMenuFunc, glm::vec2(0.0f, -0.01f), glm::vec2(0.15f * 0.11f, 0.06f * 0.11f));
 	GL_CALL(this->m_gotoMenuButton.SetButtonTex("res/textures/main-menubutton.png"));

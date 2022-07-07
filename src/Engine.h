@@ -15,6 +15,7 @@
 
 #include "GameObject/Player.h"
 #include "Level/level.h"
+#include "GameObject/DeathParticle.h"
 
 #include <vector>
 
@@ -85,6 +86,8 @@ namespace Geodash3
 		std::vector<std::string> m_resetLevels; //When you want to reset a level,
 												//set it equal to the corresponding level
 												//in this vector
+		//Particles for when the player dies
+		std::vector<Geodash3::DeathParticle> m_deathParticles;
 
 		//Whether the game is paused
 		bool m_paused = true, m_menu = true;

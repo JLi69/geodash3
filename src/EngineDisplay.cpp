@@ -54,7 +54,9 @@ void Geodash3::Engine::m_Display()
 	m_modelViewMat = glm::mat4(1.0f);
 	if(this->m_menu)
 		m_modelViewMat *= glm::rotate(glm::mat4(1.0f), -3.14f / 4.0f, glm::vec3(0.0f, 1.0f, 0.5f));
-	m_modelViewMat *= m_rotationMatrix * m_viewMatrix * glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, -3.0f, -6.0f) + (this->m_menu ? glm::vec3(-2.5f, 0.6f, 0.0f) : glm::vec3(0.0f, 0.0f, 0.0f))) * glm::scale(glm::mat4(1.0f), glm::vec3(1.0f, 1.0f, 256.0f));			
+	m_modelViewMat *= m_rotationMatrix *
+					  m_viewMatrix *
+					  glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, -3.0f, -6.0f) + (this->m_menu ? glm::vec3(-2.5f, 0.6f, 0.0f) : glm::vec3(0.0f, 0.0f, 0.0f))) * glm::scale(glm::mat4(1.0f), glm::vec3(1.0f, 1.0f, 256.0f));			
 	GL_CALL(glUniformMatrix4fv(m_basic3D.GetUniformLocation("u_ModelViewMat"), 1, false, glm::value_ptr(m_modelViewMat)));	
 	GL_CALL(glDrawArrays(GL_TRIANGLES, 0, 36));
 
@@ -63,18 +65,39 @@ void Geodash3::Engine::m_Display()
 	//Draw the player
 	//Don't draw the player on the main menu screen
 	if(!this->m_menu)
-	{	
-		//Player texture
-		GL_CALL(this->m_player.ActivateTexture(GL_TEXTURE0));
-		m_modelViewMat = m_rotationMatrix * 
-		   				 m_viewMatrix * 
-		   				 glm::translate(glm::mat4(1.0f), this->m_playerCube.position) *
-		   				 glm::scale(glm::mat4(1.0f), this->m_playerCube.dimensions) *
-		   				 glm::rotate(glm::mat4(1.0f), this->m_playerCube.rotation.z, glm::vec3(0.0f, 0.0f, 1.0f)) *
-		   				 glm::rotate(glm::mat4(1.0f), this->m_playerCube.rotation.y, glm::vec3(0.0f, 1.0f, 0.0f)) *
-		   				 glm::rotate(glm::mat4(1.0f), this->m_playerCube.rotation.x, glm::vec3(1.0f, 0.0f, 0.0f));
-		GL_CALL(glUniformMatrix4fv(m_basic3D.GetUniformLocation("u_ModelViewMat"), 1, false, glm::value_ptr(m_modelViewMat)));	
-		GL_CALL(glDrawArrays(GL_TRIANGLES, 0, 36));
+	{
+		//Don't draw the player if dead
+		if(!this->m_playerCube.dead)
+		{
+			//Player texture
+			GL_CALL(this->m_player.ActivateTexture(GL_TEXTURE0));
+			m_modelViewMat = m_rotationMatrix * 
+			   				m_viewMatrix * 
+			   				glm::translate(glm::mat4(1.0f), this->m_playerCube.position) *
+			   				glm::scale(glm::mat4(1.0f), this->m_playerCube.dimensions) *
+			   				glm::rotate(glm::mat4(1.0f), this->m_playerCube.rotation.z, glm::vec3(0.0f, 0.0f, 1.0f)) *
+			   				glm::rotate(glm::mat4(1.0f), this->m_playerCube.rotation.y, glm::vec3(0.0f, 1.0f, 0.0f)) *
+			   				glm::rotate(glm::mat4(1.0f), this->m_playerCube.rotation.x, glm::vec3(1.0f, 0.0f, 0.0f));
+			GL_CALL(glUniformMatrix4fv(m_basic3D.GetUniformLocation("u_ModelViewMat"), 1, false, glm::value_ptr(m_modelViewMat)));	
+			GL_CALL(glDrawArrays(GL_TRIANGLES, 0, 36));
+		}
+		//Draw death particles if the player is dead
+		else
+		{
+			GL_CALL(this->m_player.ActivateTexture(GL_TEXTURE0));	
+			for(auto deathPart : this->m_deathParticles)
+			{	
+				if(deathPart.distTravelled <= 3.0f)
+				{
+					m_modelViewMat = m_rotationMatrix *
+									 m_viewMatrix *
+									 glm::translate(glm::mat4(1.0f), deathPart.position) *
+									 glm::scale(glm::mat4(1.0f), deathPart.dimensions);
+					GL_CALL(glUniformMatrix4fv(m_basic3D.GetUniformLocation("u_ModelViewMat"), 1, false, glm::value_ptr(m_modelViewMat)));
+					GL_CALL(glDrawArrays(GL_TRIANGLES, 0, 36));	
+				}	
+			}
+		}
 	}
 
 	//Display the block	
