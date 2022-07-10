@@ -20,6 +20,7 @@ void main()
 	o_Color = u_Color * o_Shading;
 	o_Color = texture(samp2, o_texCoord) * o_Shading;
 
+	//Shading on edge of pyramid
 	if(fragPos.x + 0.5 + fragPos.z + 0.5 <= fragPos.y + 0.3 &&
 		fragPos.x + 0.5 + fragPos.z + 0.5 >= fragPos.y - 0.3 ||
 
@@ -34,5 +35,6 @@ void main()
 
 		fragPos.y < -0.8) 
 		o_Color *= 0.5;
-	o_Color.a = 1.0;
+	
+	o_Color.a = 1.0;	
 }

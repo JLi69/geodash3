@@ -5,7 +5,7 @@ void Geodash3::Engine::m_Display()
 {
 	//Update the view matrix
 	if(this->m_playerCube.position.y > -0.4f)
-		this->m_viewMatrix = glm::mat4(1.0f) * glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, -0.8f - (this->m_playerCube.position.y + 0.4f), 1.5f)); 
+		this->m_viewMatrix = glm::mat4(1.0f) * glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, -0.8f - 1.1f * (this->m_playerCube.position.y + 0.4f), 1.5f)); 
 	else
 		this->m_viewMatrix = glm::mat4(1.0f) * glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, -0.8f, 1.5f));
 
@@ -109,7 +109,7 @@ void Geodash3::Engine::m_Display()
 	{
 		if((block.position.z < -64.0f || block.position.z > 1.0f) && !this->m_menu)
 			continue;
-		
+
 		//Set the texture but only change the texture
 		//when we hit a new block so that we minimize
 		//OpenGL operations
