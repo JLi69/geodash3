@@ -117,5 +117,5 @@ Geodash3::Engine::Engine()
 	std::string line;
 	while(std::getline(levelListFile, line))	
 		this->m_resetLevels.push_back(line);
-	this->m_level = Geodash3::LoadLevel(this->m_resetLevels.at(this->m_currentLevel));
+	this->m_level = Geodash3::LoadLevel(this->m_resetLevels.at(this->m_currentLevel));	
 }

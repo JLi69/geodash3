@@ -17,5 +17,5 @@ void Geodash3::init(GLFWwindow *&win, const char *title)
 
 	//Initialize glad
 	if(!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
-		exit(-1);
+		exit(-1);	
 }

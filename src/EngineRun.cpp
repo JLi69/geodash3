@@ -4,7 +4,15 @@
 
 //Main loop
 void Geodash3::Engine::Run()
-{
+{	
+	//Set up the sounds		
+	m_soundIds["explode"] = m_sounds->AddSoundEffect("res/sounds/explosion.wav");		
+	m_soundIds["boing"] = m_sounds->AddSoundEffect("res/sounds/bounce.wav");
+	m_soundIds["win"] = m_sounds->AddSoundEffect("res/sounds/win.wav");	
+	m_soundIds["click"] = m_sounds->AddSoundEffect("res/sounds/click.wav");
+	//Music	
+	Geodash3::MusicBuffer* m_music = new Geodash3::MusicBuffer("res/sounds/Venus.wav");
+
 	//Set the background color of the window
 	GL_CALL(glClearColor(0.0f, 0.8f, 1.0f, 1.0f));
 	//Enable the depth test
@@ -20,6 +28,8 @@ void Geodash3::Engine::Run()
 
 	//Set the spike texture so that we reduce OpenGL calls in the main cloop	
 	GL_CALL(this->m_spike.ActivateTexture(GL_TEXTURE1));
+
+	m_music->Play();
 
 	float timePassedLastOutput = 0.0f;
 	while(!glfwWindowShouldClose(m_gameWindow))
@@ -54,11 +64,21 @@ void Geodash3::Engine::Run()
 		if(frameCount != 1.0f)
 			avgFPS *= ((frameCount - 1.0f) / (frameCount));
 		avgFPS += (1.0f / this->m_secondsToDrawFrame) / frameCount;
+		
+		m_music->UpdateBufferStream();	
+		if(!m_music->isPlaying())
+		{
+			delete m_music;	
+			m_music = new Geodash3::MusicBuffer("res/sounds/Venus.wav");	
+			m_music->Play();		
+		}	
 	}
-
+	
 	//Output the average FPS in the game
 	std::cout << "-----------------------------------\n";
 	std::cout << "Average Frames Per Second: " << avgFPS << '\n';
+	
+	delete m_music;
 
 	glfwTerminate();
 }

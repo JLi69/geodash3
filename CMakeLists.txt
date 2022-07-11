@@ -30,6 +30,12 @@ add_executable(
 	${PROJECT_SOURCE_DIR}/src/GL-Utils/Texture-Utils/TextureCoords.cpp
 	${PROJECT_SOURCE_DIR}/src/GL-Utils/Texture-Utils/TextureObj.cpp
 
+	#audio
+	${PROJECT_SOURCE_DIR}/src/Audio-Utils/SoundDevice.cpp
+	${PROJECT_SOURCE_DIR}/src/Audio-Utils/SoundBuffer.cpp
+	${PROJECT_SOURCE_DIR}/src/Audio-Utils/SoundSource.cpp
+	${PROJECT_SOURCE_DIR}/src/Audio-Utils/MusicBuffer.cpp
+
 	#init
 	${PROJECT_SOURCE_DIR}/src/Init/init.cpp
 
@@ -71,6 +77,7 @@ else()
 	target_link_libraries(${PROJECT_NAME} soil)
 	target_link_libraries(${PROJECT_NAME} OpenGL::GL)
 	target_link_libraries(${PROJECT_NAME} glfw3)	
+	target_link_libraries(${PROJECT_NAME} openal sndfile)
 endif()
 
 #find_library(glfw3lib glfw3 PATHS ${CMAKE_SOURCE_DIR}/dependencies/lib-vc2019)

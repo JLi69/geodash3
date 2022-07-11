@@ -39,6 +39,8 @@ void Geodash3::Engine::m_Update()
 		this->m_currentLevel = this->m_resetLevels.size() - 1;
 		//Player cube runs off into the sunset
 		this->m_playerCube.movement.z = -20.0f;
+
+		this->m_soundSrc.Play(m_soundIds["win"]);
 	}
 
 	//Update the blocks
@@ -70,6 +72,9 @@ void Geodash3::Engine::m_Update()
 				this->m_playerCube.dead = true;	
 				block.Update(this->m_secondsToDrawFrame);	
 				
+				//Play explosion sound
+				m_soundSrc.Play(m_soundIds["explode"]);	
+
 				//Create the death particles
 				for(int i = 0; i < 32; i++)
 				{
@@ -98,6 +103,7 @@ void Geodash3::Engine::m_Update()
 				{
 					this->m_playerCube.bouncing = true;
 					this->m_playerCube.position.y += 0.2f;	
+					m_soundSrc.Play(m_soundIds["boing"]);	
 				}		
 			}
 
@@ -125,6 +131,10 @@ void Geodash3::Engine::m_Update()
 				//Reset the player and level
 				//this->m_playerCube = Geodash3::Player(glm::vec3(0.0f, -1.8f, -4.5f));
 				//this->m_level = Geodash3::LoadLevel(this->m_resetLevels.at(this->m_currentLevel));	
+					
+				//Play explosion sound
+				m_soundSrc.Play(m_soundIds["explode"]);
+
 				this->m_playerCube.dead = true;		
 				//Create the death particles
 				for(int i = 0; i < 32; i++)

@@ -17,6 +17,10 @@
 #include "Level/level.h"
 #include "GameObject/DeathParticle.h"
 
+#include "Audio-Utils/SoundBuffer.h"
+#include "Audio-Utils/SoundSource.h"
+#include "Audio-Utils/MusicBuffer.h"
+
 #include <vector>
 
 /*
@@ -93,6 +97,11 @@ namespace Geodash3
 		bool m_paused = true, m_menu = true;
 		//Number of seconds to draw the frame
 		float m_secondsToDrawFrame = 1.0f;
+
+		//Sounds
+		Geodash3::SoundBuffer* m_sounds = Geodash3::SoundBuffer::get();
+		Geodash3::SoundSource m_soundSrc;
+		std::map<std::string, ALint> m_soundIds;	
 
 		//Handle key input
 		void m_HandleKeyInput(GLFWwindow *win, int key, int scancode, int action, int mods);
