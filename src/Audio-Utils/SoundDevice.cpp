@@ -1,6 +1,7 @@
 #include "SoundDevice.h"
 #define AL_LIBTYPE_STATIC
 #include <AL/alc.h>
+#define AL_LIBTYPE_STATIC
 #include <AL/al.h>
 #include <iostream>
 
