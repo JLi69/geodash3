@@ -1,6 +1,6 @@
 #include "Engine.h"
 
-void Geodash3::Engine::m_HandleMouseInput(GLFWwindow *win, int button, int action, int mods)
+void Geodash3::Engine::m_HandleMouseInput(GLFWwindow *win, int button, int action, int mods) 
 {
 	if(this->m_paused && !this->m_menu && button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS)
 	{

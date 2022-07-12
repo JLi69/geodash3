@@ -1,6 +1,8 @@
 #include "MusicBuffer.h"
 #include <malloc.h>
 #include <iostream>
+#include <sstream>
+#include <cstdlib>
 
 void Geodash3::MusicBuffer::Play()
 {
@@ -106,12 +108,30 @@ Geodash3::MusicBuffer::MusicBuffer(const char *filename)
 	size_t frameSize;
 
 	m_soundFile = sf_open(filename, SFM_READ, &m_sfinfo);
+#ifndef WINDOWS	
+	//Failed to open sound file, attempt to search in .geodash3 in the home directory	
+	if(!m_soundFile)
+	{
+		std::stringstream newPath;
+		//get user's home directory	
+		const char* home = getenv("HOME");	
+		newPath << home << "/.geodash3/" << filename; 
+		m_soundFile = sf_open(newPath.str().c_str(), SFM_READ, &m_sfinfo);	
+	}
+	//Failed to open sound file again, attempt to search in /usr/share/games
+	if(!m_soundFile)
+	{	
+		std::stringstream newPath;	
+		newPath << "/usr/share/games/geodash3/" << filename; 
+		m_soundFile = sf_open(newPath.str().c_str(), SFM_READ, &m_sfinfo);
+	}
+#endif
 	if(!m_soundFile)	
 	{	
 		std::cout << "Failed to open file: " << filename << '\n';	
 		throw("Could not open file, path not found");		
 	}
-		
+
 	//Get format
 	m_format = AL_NONE;
 	if(m_sfinfo.channels == 1)

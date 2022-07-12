@@ -2,6 +2,8 @@
 #include <sndfile.h>
 #include <iostream>
 #include <AL/alext.h>
+#include <sstream>
+#include <cstdlib>
 
 Geodash3::SoundBuffer::SoundBuffer()
 {
@@ -38,7 +40,25 @@ ALuint Geodash3::SoundBuffer::AddSoundEffect(const char *filename)
 	ALsizei byteCount;
 
 	//Open sound file
-	soundFile = sf_open(filename, SFM_READ, &sfinfo);
+	soundFile = sf_open(filename, SFM_READ, &sfinfo);	
+#ifndef WINDOWS	
+	//Failed to open sound file, attempt to search in .geodash3 in the home directory	
+	if(!soundFile)
+	{
+		std::stringstream newPath;
+		//get user's home directory	
+		const char* home = getenv("HOME");	
+		newPath << home << "/.geodash3/" << filename; 
+		soundFile = sf_open(newPath.str().c_str(), SFM_READ, &sfinfo);	
+	}
+	//Failed to open sound file again, attempt to search in /usr/share/games
+	if(!soundFile)
+	{	
+		std::stringstream newPath;	
+		newPath << "/usr/share/games/geodash3/" << filename; 
+		soundFile = sf_open(newPath.str().c_str(), SFM_READ, &sfinfo);
+	}
+#endif
 	//Failed to open sound file	
 	if(!soundFile)
 	{
@@ -59,12 +79,7 @@ ALuint Geodash3::SoundBuffer::AddSoundEffect(const char *filename)
 		format = AL_FORMAT_MONO16;
 	else if(sfinfo.channels == 2)
 		format = AL_FORMAT_STEREO16;
-	/*else if(sfinfo.channels == 3)
-		if(sf_command(soundFile, SFC_WAVEX_GET_AMBISONIC, NULL, 0) == SF_AMBISONIC_B_FORMAT)
-			format = AL_FORMAT_BFORMAT2D_16;
-	else if(sfinfo.channels == 4)
-		if(sf_command(soundFile, SFC_WAVEX_GET_AMBISONIC, NULL, 0) == SF_AMBISONIC_B_FORMAT)
-			format = AL_FORMAT_BFORMAT3D_16; */
+	
 	//Unsupported format	
 	if(!format)
 	{
