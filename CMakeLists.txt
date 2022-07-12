@@ -9,9 +9,9 @@ include_directories(${CMAKE_SOURCE_DIR}/dependencies/include)
 find_package(OpenGL REQUIRED)
 
 if(${CMAKE_HOST_SYSTEM_NAME} STREQUAL "Windows")
-	set(CMAKE_CXX_FLAGS "-mwindows -DWINDOWS -O2 -flto -static-libstdc++ -static-libgcc")
+	set(CMAKE_CXX_FLAGS "-mwindows -DAL_LIBTYPE_STATIC -DWINDOWS -O2 -flto -static-libstdc++ -static-libgcc")
 else()
-	set(CMAKE_CXX_FLAGS "-O2 -flto -static-libstdc++ -static-libgcc")
+	set(CMAKE_CXX_FLAGS "-O2 -DAL_LIBTYPE_STATIC -flto -static-libstdc++ -static-libgcc")
 endif()
 
 #Create the executable
@@ -76,8 +76,9 @@ if(${CMAKE_HOST_SYSTEM_NAME} STREQUAL "Windows")
 else()
 	target_link_libraries(${PROJECT_NAME} soil)
 	target_link_libraries(${PROJECT_NAME} OpenGL::GL)
-	target_link_libraries(${PROJECT_NAME} glfw3)	
-	target_link_libraries(${PROJECT_NAME} openal sndfile)
+	target_link_libraries(${PROJECT_NAME} glfw3)
+	target_link_libraries(${PROJECT_NAME} libopenal.a)
+	target_link_libraries(${PROJECT_NAME} sndfile)
 endif()
 
 #find_library(glfw3lib glfw3 PATHS ${CMAKE_SOURCE_DIR}/dependencies/lib-vc2019)
