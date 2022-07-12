@@ -1,3 +1,4 @@
+#define AL_LIBTYPE_STATIC
 #include <AL/al.h>
 
 namespace Geodash3

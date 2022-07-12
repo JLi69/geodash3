@@ -1,6 +1,7 @@
 #include "SoundBuffer.h"
 #include <sndfile.h>
 #include <iostream>
+#define AL_LIBTYPE_STATIC
 #include <AL/alext.h>
 #include <sstream>
 #include <cstdlib>
