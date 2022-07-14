@@ -5,6 +5,11 @@ cmake_minimum_required(VERSION 3.10)
 project(geodash3)
 
 include_directories(${CMAKE_SOURCE_DIR}/dependencies/include)
+if(${CMAKE_HOST_SYSTEM_NAME} STREQUAL "Windows")
+	include_directories(${CMAKE_SOURCE_DIR}/dependencies/sndfile-win)
+else()
+	include_directories(${CMAKE_SOURCE_DIR}/dependencies/sndfile-linux)
+endif()
 
 find_package(OpenGL REQUIRED)
 
