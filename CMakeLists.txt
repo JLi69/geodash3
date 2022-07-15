@@ -14,8 +14,8 @@ endif()
 
 find_package(OpenGL REQUIRED)
 
-if(${CMAKE_HOST_SYSTEM_NAME} STREQUAL "Windows" AND WIN_DEBUG STREQUAL "false")
-	set(CMAKE_CXX_FLAGS "-mwindows -DWINDOWS -O2 -flto -static-libstdc++ -static-libgcc")			
+if(${CMAKE_HOST_SYSTEM_NAME} STREQUAL "Windows")
+	set(CMAKE_CXX_FLAGS "-DWINDOWS -O2 -static-libstdc++ -static-libgcc -mwindows -Wl,-Bstatic,--whole-archive -lwinpthread -Wl,-Bdynamic,--no-whole-archive")	
 else()
 	set(CMAKE_CXX_FLAGS "-Wl,-rpath=${ORIGIN} -O2 -flto -static-libstdc++ -static-libgcc")		
 endif()
@@ -72,15 +72,15 @@ add_executable(
 )
 
 if(${CMAKE_HOST_SYSTEM_NAME} STREQUAL "Windows")
-	target_link_libraries(${PROJECT_NAME} gdi32)
+	target_link_libraries(${PROJECT_NAME} gdi32 pthread)
 	#target_link_libraries(${PROJECT_NAME} user32 kernel32 winspool.lib
 	#						comdlg32 advapi32 shell32 ole32 oleaut32
 	#						uuid odbc32 odbccp32 opengl32)		
 	target_link_libraries(${PROJECT_NAME} SOIL)	
 	target_link_libraries(${PROJECT_NAME} OpenGL::GL)
-	target_link_libraries(${PROJECT_NAME} glfw3)	
-	target_link_libraries(${PROJECT_NAME} sndfile)
+	target_link_libraries(${PROJECT_NAME} glfw3)
 	target_link_libraries(${PROJECT_NAME} OpenAL32)
+	target_link_libraries(${PROJECT_NAME} sndfile)	
 else()
 	target_link_libraries(${PROJECT_NAME} soil)
 	target_link_libraries(${PROJECT_NAME} OpenGL::GL)
