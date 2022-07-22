@@ -9,8 +9,7 @@ void Geodash3::Engine::Run()
 	Geodash3::MusicBuffer* m_music = new Geodash3::MusicBuffer("res/sounds/music1.wav");	
 	//Set up the sounds					
 	m_soundIds["boing"] = m_sounds->AddSoundEffect("res/sounds/bounce.wav");
-	m_soundIds["explode"] = m_sounds->AddSoundEffect("res/sounds/explosion.wav");	
-	m_soundIds["win"] = m_sounds->AddSoundEffect("res/sounds/win.wav");	
+	m_soundIds["explode"] = m_sounds->AddSoundEffect("res/sounds/explosion.wav");		
 	m_soundIds["click"] = m_sounds->AddSoundEffect("res/sounds/click.wav");	
 
 	//Set the background color of the window

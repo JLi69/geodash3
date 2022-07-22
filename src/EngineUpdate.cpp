@@ -39,8 +39,6 @@ void Geodash3::Engine::m_Update()
 		this->m_currentLevel = this->m_resetLevels.size() - 1;
 		//Player cube runs off into the sunset
 		this->m_playerCube.movement.z = -20.0f;
-
-		this->m_soundSrc.Play(m_soundIds["win"]);
 	}
 
 	//Update the blocks
