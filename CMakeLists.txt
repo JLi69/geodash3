@@ -39,8 +39,7 @@ add_executable(
 	#audio
 	${PROJECT_SOURCE_DIR}/src/Audio-Utils/SoundDevice.cpp
 	${PROJECT_SOURCE_DIR}/src/Audio-Utils/SoundBuffer.cpp
-	${PROJECT_SOURCE_DIR}/src/Audio-Utils/SoundSource.cpp
-	${PROJECT_SOURCE_DIR}/src/Audio-Utils/MusicBuffer.cpp
+	${PROJECT_SOURCE_DIR}/src/Audio-Utils/SoundSource.cpp	
 
 	#init
 	${PROJECT_SOURCE_DIR}/src/Init/init.cpp

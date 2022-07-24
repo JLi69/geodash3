@@ -4,9 +4,7 @@
 
 //Main loop
 void Geodash3::Engine::Run()
-{	
-	//Music	
-	Geodash3::MusicBuffer* m_music = new Geodash3::MusicBuffer("res/sounds/music1.wav");	
+{		
 	//Set up the sounds					
 	m_soundIds["boing"] = m_sounds->AddSoundEffect("res/sounds/bounce.wav");
 	m_soundIds["explode"] = m_sounds->AddSoundEffect("res/sounds/explosion.wav");		
@@ -26,9 +24,7 @@ void Geodash3::Engine::Run()
 		  frameCount = 0.0f; //Number of frames passed
 
 	//Set the spike texture so that we reduce OpenGL calls in the main cloop	
-	GL_CALL(this->m_spike.ActivateTexture(GL_TEXTURE1));
-
-	m_music->Play();
+	GL_CALL(this->m_spike.ActivateTexture(GL_TEXTURE1));	
 
 	float timePassedLastOutput = 0.0f;
 	while(!glfwWindowShouldClose(m_gameWindow))
@@ -62,22 +58,12 @@ void Geodash3::Engine::Run()
 		frameCount++;
 		if(frameCount != 1.0f)
 			avgFPS *= ((frameCount - 1.0f) / (frameCount));
-		avgFPS += (1.0f / this->m_secondsToDrawFrame) / frameCount;
-		
-		m_music->UpdateBufferStream();	
-		if(!m_music->isPlaying())
-		{
-			delete m_music;	
-			m_music = new Geodash3::MusicBuffer("res/sounds/music1.wav");	
-			m_music->Play();		
-		}	
+		avgFPS += (1.0f / this->m_secondsToDrawFrame) / frameCount;	
 	}
 	
 	//Output the average FPS in the game
 	std::cout << "-----------------------------------\n";
-	std::cout << "Average Frames Per Second: " << avgFPS << '\n';
-	
-	delete m_music;		
+	std::cout << "Average Frames Per Second: " << avgFPS << '\n';	
 
 	glfwTerminate();
 }
