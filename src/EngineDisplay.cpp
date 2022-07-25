@@ -56,7 +56,8 @@ void Geodash3::Engine::m_Display()
 		m_modelViewMat *= glm::rotate(glm::mat4(1.0f), -3.14f / 4.0f, glm::vec3(0.0f, 1.0f, 0.5f));
 	m_modelViewMat *= m_rotationMatrix *
 					  m_viewMatrix *
-					  glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, -3.0f, -6.0f) + (this->m_menu ? glm::vec3(-2.5f, 0.6f, 0.0f) : glm::vec3(0.0f, 0.0f, 0.0f))) * glm::scale(glm::mat4(1.0f), glm::vec3(1.0f, 1.0f, 256.0f));			
+					  glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, -3.0f, -6.0f) + (this->m_menu ? glm::vec3(-2.5f, 0.6f, 0.0f) : glm::vec3(0.0f, 0.0f, 0.0f))) *
+					  glm::scale(glm::mat4(1.0f), glm::vec3(1.0f, 1.0f, 1000.0f));			
 	GL_CALL(glUniformMatrix4fv(m_basic3D.GetUniformLocation("u_ModelViewMat"), 1, false, glm::value_ptr(m_modelViewMat)));	
 	GL_CALL(glDrawArrays(GL_TRIANGLES, 0, 36));
 
