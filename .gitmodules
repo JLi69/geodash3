@@ -10,3 +10,6 @@
 [submodule "dependencies/include/openal-soft"]
 	path = dependencies/include/openal-soft
 	url = https://github.com/kcat/openal-soft
+[submodule "dependencies/include/libsndfile"]
+	path = dependencies/include/libsndfile
+	url = https://github.com/libsndfile/libsndfile
