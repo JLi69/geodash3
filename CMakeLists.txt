@@ -1,10 +1,14 @@
 #Minimum version of cmake required to compile
-cmake_minimum_required(VERSION 3.10)
+cmake_minimum_required(VERSION 3.11)
 
 #Name of project
 project(geodash3)
 
 include_directories(${CMAKE_SOURCE_DIR}/dependencies/include)
+include_directories(${CMAKE_SOURCE_DIR}/dependencies/include/glfw/include)
+include_directories(${CMAKE_SOURCE_DIR}/dependencies/include/glm)
+include_directories(${CMAKE_SOURCE_DIR}/dependencies/include/openal-soft/include)
+include_directories(${CMAKE_SOURCE_DIR}/dependencies/include/soil/include)
 if(${CMAKE_HOST_SYSTEM_NAME} STREQUAL "Windows")
 	include_directories(${CMAKE_SOURCE_DIR}/dependencies/sndfile-win)
 else()

@@ -1,0 +1,12 @@
+[submodule "dependencies/include/glfw"]
+	path = dependencies/include/glfw
+	url = https://github.com/glfw/glfw
+[submodule "dependencies/include/glm"]
+	path = dependencies/include/glm
+	url = https://github.com/g-truc/glm
+[submodule "dependencies/include/soil"]
+	path = dependencies/include/soil
+	url = https://github.com/littlstar/soil
+[submodule "dependencies/include/openal-soft"]
+	path = dependencies/include/openal-soft
+	url = https://github.com/kcat/openal-soft
