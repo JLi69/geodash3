@@ -4,7 +4,11 @@ cmake_minimum_required(VERSION 3.11)
 #Name of project
 project(geodash3)
 
-include_directories(${CMAKE_SOURCE_DIR}/dependencies/include)
+add_subdirectory(${CMAKE_SOURCE_DIR}/dependencies/include/glad)
+add_custom_target(
+	glad_lib
+	COMMAND cd dependencies/include/glad && make
+)
 include_directories(${CMAKE_SOURCE_DIR}/dependencies/include/glfw/include)
 include_directories(${CMAKE_SOURCE_DIR}/dependencies/include/glm)
 include_directories(${CMAKE_SOURCE_DIR}/dependencies/include/openal-soft/include)
@@ -26,7 +30,7 @@ add_executable(
 
 	#Files to compile
 	${PROJECT_SOURCE_DIR}/Main.cpp
-	${PROJECT_SOURCE_DIR}/glad.c
+	#${PROJECT_SOURCE_DIR}/glad.c
 
 	#OpenGL utilities
 	${PROJECT_SOURCE_DIR}/src/GL-Utils/Shader.cpp
@@ -70,28 +74,20 @@ add_executable(
 	${PROJECT_SOURCE_DIR}/src/Level/level.cpp
 )
 
+add_dependencies(${PROJECT_NAME} glad_lib)
 if(${CMAKE_HOST_SYSTEM_NAME} STREQUAL "Windows")
+	target_link_libraries(${PROJECT_NAME} ${CMAKE_BINARY_DIR}/dependencies/include/glad/libglad.a) 	
 	target_link_libraries(${PROJECT_NAME} gdi32 pthread)
-	#target_link_libraries(${PROJECT_NAME} user32 kernel32 winspool.lib
-	#						comdlg32 advapi32 shell32 ole32 oleaut32
-	#						uuid odbc32 odbccp32 opengl32)		
 	target_link_libraries(${PROJECT_NAME} SOIL)	
 	target_link_libraries(${PROJECT_NAME} OpenGL::GL)
 	target_link_libraries(${PROJECT_NAME} glfw3)
 	target_link_libraries(${PROJECT_NAME} OpenAL32)
 	target_link_libraries(${PROJECT_NAME} sndfile)	
 else()
+	target_link_libraries(${PROJECT_NAME} ${CMAKE_BINARY_DIR}/dependencies/include/glad/libglad.a) 	
 	target_link_libraries(${PROJECT_NAME} soil)
 	target_link_libraries(${PROJECT_NAME} OpenGL::GL)
 	target_link_libraries(${PROJECT_NAME} glfw3)
 	target_link_libraries(${PROJECT_NAME} openal)
 	target_link_libraries(${PROJECT_NAME} sndfile)
 endif()
-
-#find_library(glfw3lib glfw3 PATHS ${CMAKE_SOURCE_DIR}/dependencies/lib-vc2019)
-#if(${glfw3lib} STREQUAL glfw3lib-NOTFOUND)
-#	message(FATAL "glfw not found!")
-#else()
-#	message("glfw found at " ${glfw3lib})
-#	target_link_libraries(${PROJECT_NAME} ${glfw3lib})
-#endif()

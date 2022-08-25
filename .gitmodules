@@ -13,3 +13,6 @@
 [submodule "dependencies/include/libsndfile"]
 	path = dependencies/include/libsndfile
 	url = https://github.com/libsndfile/libsndfile
+[submodule "dependencies/include/glad"]
+	path = dependencies/include/glad
+	url = https://github.com/Dav1dde/glad
