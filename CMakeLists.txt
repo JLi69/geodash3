@@ -5,10 +5,7 @@ cmake_minimum_required(VERSION 3.11)
 project(geodash3)
 
 add_subdirectory(${CMAKE_SOURCE_DIR}/dependencies/include/glad)
-add_custom_target(
-	glad_lib
-	COMMAND cd dependencies/include/glad && make
-)
+include_directories(${CMAKE_BINARY_DIR}/dependencies/include/glad/include)
 include_directories(${CMAKE_SOURCE_DIR}/dependencies/include/glfw/include)
 include_directories(${CMAKE_SOURCE_DIR}/dependencies/include/glm)
 include_directories(${CMAKE_SOURCE_DIR}/dependencies/include/openal-soft/include)
@@ -20,8 +17,16 @@ find_package(OpenGL REQUIRED)
 
 if(${CMAKE_HOST_SYSTEM_NAME} STREQUAL "Windows")
 	set(CMAKE_CXX_FLAGS "-DWINDOWS -O2 -static-libstdc++ -static-libgcc -mwindows -Wl,-Bstatic,--whole-archive -lwinpthread -Wl,-Bdynamic,--no-whole-archive")	
+	add_custom_target(
+		glad_lib
+		COMMAND cd dependencies/include/glad && mingw32-make
+	)
 else()
 	set(CMAKE_CXX_FLAGS "-Wl,-rpath=${ORIGIN} -O2 -flto -static-libstdc++ -static-libgcc")		
+	add_custom_target(
+		glad_lib
+		COMMAND cd dependencies/include/glad && make
+	)
 endif()
 
 #Create the executable
