@@ -22,19 +22,19 @@ bool Geodash3::Button::MouseHovering(GLFWwindow *win, double mouseX, double mous
 	int winWidth, winHeight;
 	glfwGetWindowSize(win, &winWidth, &winHeight);
 
-	if(winWidth > winHeight)
+	if((float)winWidth > (float)winHeight * 1920.0f / 1080.0f)
 	{
 		return (float)mouseX / (float)winWidth * 2.0f - 1.0f >= this->m_position.x - this->m_dimensions.x &&
 			   (float)mouseX / (float)winWidth * 2.0f - 1.0f <= this->m_position.x + this->m_dimensions.x &&
 			   ((float)mouseY / (float)winHeight * 2.0f - 1.0f) * -1.0f >= this->m_position.y * (float)winWidth / (float)winHeight - this->m_dimensions.y * (float)winWidth / (float)winHeight &&
 			   ((float)mouseY / (float)winHeight * 2.0f - 1.0f) * -1.0f <= this->m_position.y * (float)winWidth / (float)winHeight + this->m_dimensions.y * (float)winWidth / (float)winHeight;
 	}
-	else if(winWidth <= winHeight)
+	else if((float)winWidth <= (float)winHeight * 1920.0f / 1080.0f)
 	{
-		return (float)mouseX / (float)winWidth * 2.0f - 1.0f >= this->m_position.x * (float)winHeight / (float)winWidth - this->m_dimensions.x * (float)winHeight / (float)winWidth &&
-			   (float)mouseX / (float)winWidth * 2.0f - 1.0f <= this->m_position.x * (float)winHeight / (float)winWidth + this->m_dimensions.x * (float)winHeight / (float)winWidth &&
-			   ((float)mouseY / (float)winHeight * 2.0f - 1.0f) * -1.0f >= this->m_position.y - this->m_dimensions.y * (float)winWidth / (float)winHeight &&
-			   ((float)mouseY / (float)winHeight * 2.0f - 1.0f) * -1.0f <= this->m_position.y + this->m_dimensions.y;
+		return (float)mouseX / (float)winWidth * 2.0f - 1.0f >= this->m_position.x * (float)winHeight / (float)winWidth * 1920.0f / 1080.0f - this->m_dimensions.x * (float)winHeight / (float)winWidth * 1920.0f / 1080.0f &&
+			   (float)mouseX / (float)winWidth * 2.0f - 1.0f <= this->m_position.x * (float)winHeight / (float)winWidth * 1920.0f / 1080.0f + this->m_dimensions.x * (float)winHeight / (float)winWidth * 1920.0f / 1080.0f &&
+			   ((float)mouseY / (float)winHeight * 2.0f - 1.0f) * -1.0f >= this->m_position.y * 1920.0f / 1080.0f - this->m_dimensions.y * 1920.0f / 1080.0f &&
+			   ((float)mouseY / (float)winHeight * 2.0f - 1.0f) * -1.0f <= this->m_position.y * 1920.0f / 1080.0f + this->m_dimensions.y * 1920.0f / 1080.0f;
 	}
 
 	return false;

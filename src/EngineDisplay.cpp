@@ -158,35 +158,35 @@ void Geodash3::Engine::m_Display()
 		GL_CALL(glDrawArrays(GL_TRIANGLES, 0, 18));
 	}	
 
+	GL_CALL(glDisable(GL_DEPTH_TEST));	
 	GL_CALL(glFrontFace(GL_CW));
 	GL_CALL(this->m_rect.Enable());
 	//Draw the progress bar
 	if(!this->m_menu)
 	{	
 		GL_CALL(glUseProgram(m_progressShader.GetId()));
-		GL_CALL(glUniformMatrix4fv(m_progressShader.GetUniformLocation("u_PerspectiveMat"), 1, false, glm::value_ptr(this->m_perspectiveMat)));
+		GL_CALL(glUniformMatrix4fv(m_progressShader.GetUniformLocation("u_AspectMat"), 1, false, glm::value_ptr(glm::scale(glm::mat4(1.0f), glm::vec3(1.0f, (float)1.0f / (float)1.0f, 1.0f)))));
 		GL_CALL(glUniform1f(m_progressShader.GetUniformLocation("u_percentage"), 1.0f - (-this->m_level.levelEnd - 1.0f) / (this->m_level.levelLength - 26.0f)));
-		m_modelViewMat = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.059f, -0.12f)) *
-		   				glm::scale(glm::mat4(1.0f), glm::vec3(0.1f, 0.0015f, 1.0f));
+		m_modelViewMat = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.9f, -0.12f)) *
+		   				glm::scale(glm::mat4(1.0f), glm::vec3(0.9f, 0.03f, 1.0f));
 		GL_CALL(glUniformMatrix4fv(m_progressShader.GetUniformLocation("u_ModelViewMat"), 1, false, glm::value_ptr(m_modelViewMat)));
 		GL_CALL(glDrawArrays(GL_TRIANGLES, 0, 6));
 	}
 
 	GL_CALL(this->m_rectCoords.Enable());
 	//Draw the level select menu
-	GL_CALL(glDisable(GL_DEPTH_TEST));	
 	if(this->m_menu)
 	{
 		GL_CALL(glUseProgram(this->m_buttonShader.GetId()));
 		int winW, winH;
 		glfwGetWindowSize(m_gameWindow, &winW, &winH);
-		if(winW > winH)
+		if((float)winW > (float)winH * 1920.0f / 1080.0f)
 		{
 			GL_CALL(glUniformMatrix4fv(m_buttonShader.GetUniformLocation("u_AspectMat"), 1, false, glm::value_ptr(glm::scale(glm::mat4(1.0f), glm::vec3(1.0f, (float)winW / (float)winH, 1.0f)))));	
 		}	
-		else if(winW <= winH)
+		else if((float)winW <= (float)winH * 1920.0f / 1080.0f)
 		{	
-			GL_CALL(glUniformMatrix4fv(m_buttonShader.GetUniformLocation("u_AspectMat"), 1, false, glm::value_ptr(glm::scale(glm::mat4(1.0f), glm::vec3((float)winH / (float)winW, 1.0f, 1.0f)))));	
+			GL_CALL(glUniformMatrix4fv(m_buttonShader.GetUniformLocation("u_AspectMat"), 1, false, glm::value_ptr(glm::scale(glm::mat4(1.0f), 1920.0f / 1080.0f * glm::vec3((float)winH / (float)winW, 1.0f, 1.0f)))));	
 		}
 
 		//Draw the title	
@@ -223,13 +223,13 @@ void Geodash3::Engine::m_Display()
 		GL_CALL(glUseProgram(m_buttonShader.GetId()));
 		int winW, winH;
 		glfwGetWindowSize(m_gameWindow, &winW, &winH); 
-		if(winW > winH)
+		if((float)winW > (float)winH * 1920.0f / 1080.0f)
 		{
 			GL_CALL(glUniformMatrix4fv(m_buttonShader.GetUniformLocation("u_AspectMat"), 1, false, glm::value_ptr(glm::scale(glm::mat4(1.0f), glm::vec3(1.0f, (float)winW / (float)winH, 1.0f)))));	
 		}	
-		else if(winW <= winH)
+		else if((float)winW <= (float)winH * 1920.0f / 1080.0f)
 		{	
-			GL_CALL(glUniformMatrix4fv(m_buttonShader.GetUniformLocation("u_AspectMat"), 1, false, glm::value_ptr(glm::scale(glm::mat4(1.0f), glm::vec3((float)winH / (float)winW, 1.0f, 1.0f)))));	
+			GL_CALL(glUniformMatrix4fv(m_buttonShader.GetUniformLocation("u_AspectMat"), 1, false, glm::value_ptr(glm::scale(glm::mat4(1.0f), 1920.0f / 1080.0f * glm::vec3((float)winH / (float)winW, 1.0f, 1.0f)))));	
 		}
 	
 		GL_CALL(glUniform1i(m_buttonShader.GetUniformLocation("u_hovering"), false));

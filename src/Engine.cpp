@@ -25,7 +25,7 @@ Geodash3::Engine::Engine()
 	GL_CALL(m_basicPyramid3D.CreateShader("res/shaders/vert-3d.glsl", "res/shaders/pyramid-frag.glsl"));		
 	GL_CALL(m_basic3D.CreateShader("res/shaders/vert-3d.glsl", "res/shaders/basic-frag.glsl"));			
 	GL_CALL(m_shaded3D.CreateShader("res/shaders/vert-3d.glsl", "res/shaders/shaded-frag.glsl"));	
-	GL_CALL(m_progressShader.CreateShader("res/shaders/vert-3d.glsl", "res/shaders/progress.glsl"));	
+	GL_CALL(m_progressShader.CreateShader("res/shaders/button-vert.glsl", "res/shaders/progress.glsl"));	
 	GL_CALL(m_buttonShader.CreateShader("res/shaders/button-vert.glsl", "res/shaders/button-frag.glsl"));	
 
 	//Set up the textures
