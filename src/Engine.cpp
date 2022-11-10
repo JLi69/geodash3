@@ -26,7 +26,7 @@ Geodash3::Engine::Engine()
 	GL_CALL(m_basic3D.CreateShader("res/shaders/vert-3d.glsl", "res/shaders/basic-frag.glsl"));			
 	GL_CALL(m_shaded3D.CreateShader("res/shaders/vert-3d.glsl", "res/shaders/shaded-frag.glsl"));	
 	GL_CALL(m_progressShader.CreateShader("res/shaders/vert-3d.glsl", "res/shaders/progress.glsl"));	
-	GL_CALL(m_buttonShader.CreateShader("res/shaders/vert-3d.glsl", "res/shaders/button-frag.glsl"));	
+	GL_CALL(m_buttonShader.CreateShader("res/shaders/button-vert.glsl", "res/shaders/button-frag.glsl"));	
 
 	//Set up the textures
 	GL_CALL(this->m_player = TextureObj("res/textures/player.png"));
@@ -59,13 +59,13 @@ Geodash3::Engine::Engine()
 		this->m_level = Geodash3::LoadLevel(this->m_resetLevels.at(this->m_currentLevel));
 		this->m_deathParticles.clear();	
 	};
-	this->m_gotoMenuButton = Geodash3::Button(goToMenuFunc, glm::vec2(0.0f, -0.01f), glm::vec2(0.15f * 0.11f, 0.06f * 0.11f));
+	this->m_gotoMenuButton = Geodash3::Button(goToMenuFunc, glm::vec2(0.0f, -0.1f), glm::vec2(0.15f, 0.06f));
 	GL_CALL(this->m_gotoMenuButton.SetButtonTex("res/textures/main-menubutton.png"));
 	//Quit button
-	this->m_quitButton = Geodash3::Button([]() { glfwTerminate(); exit(0); }, glm::vec2(0.0f, -0.025f), glm::vec2(0.15f * 0.11f, 0.06f * 0.11f));
+	this->m_quitButton = Geodash3::Button([]() { glfwTerminate(); exit(0); }, glm::vec2(0.0f, -0.25f), glm::vec2(0.15f, 0.06f));
 	GL_CALL(this->m_quitButton.SetButtonTex("res/textures/quitbutton.png"));
 	//Play button
-	this->m_playButton = Geodash3::Button([this]() { this->m_paused = false; this->m_menu = false; this->m_playerCube = Geodash3::Player(glm::vec3(0.0f, -1.8f, -4.5f)); }, glm::vec2(0.0f, -0.04f), glm::vec2(0.15f * 0.11f, 0.06f * 0.11f));
+	this->m_playButton = Geodash3::Button([this]() { this->m_paused = false; this->m_menu = false; this->m_playerCube = Geodash3::Player(glm::vec3(0.0f, -1.8f, -4.5f)); }, glm::vec2(0.0f, -0.3f), glm::vec2(0.15f, 0.06f));
 	GL_CALL(this->m_playButton.SetButtonTex("res/textures/playbutton.png"));
 	//Change level
 	auto prevLev = [this]()
@@ -82,10 +82,10 @@ Geodash3::Engine::Engine()
 		this->m_level = Geodash3::LoadLevel(this->m_resetLevels.at(this->m_currentLevel));	
 	};
 	//Previous level button	
-	this->m_prevButton = Geodash3::Button(prevLev, glm::vec2(-0.04f, 0.0f), glm::vec2(0.03f * 0.11f, 0.06f * 0.11f));
+	this->m_prevButton = Geodash3::Button(prevLev, glm::vec2(-0.4f, 0.0f), glm::vec2(0.03f, 0.06f));
 	GL_CALL(this->m_prevButton.SetButtonTex("res/textures/prevbutton.png"));
 	//Next level button	
-	this->m_nextButton = Geodash3::Button(nextLev, glm::vec2(0.04f, 0.0f), glm::vec2(0.03f * 0.11f, 0.06f * 0.11f));
+	this->m_nextButton = Geodash3::Button(nextLev, glm::vec2(0.4f, 0.0f), glm::vec2(0.03f, 0.06f));
 	GL_CALL(this->m_nextButton.SetButtonTex("res/textures/nextbutton.png"));
 
 	//Set up key input

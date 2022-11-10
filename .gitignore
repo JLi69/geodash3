@@ -21,3 +21,5 @@ out
 deb
 
 CMakeFiles
+
+build/dependencies

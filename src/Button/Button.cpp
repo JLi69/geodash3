@@ -22,10 +22,22 @@ bool Geodash3::Button::MouseHovering(GLFWwindow *win, double mouseX, double mous
 	int winWidth, winHeight;
 	glfwGetWindowSize(win, &winWidth, &winHeight);
 
-	return (float)mouseX / (float)winWidth * 2.0f - 1.0f >= this->m_position.x / 0.11f - this->m_dimensions.x / 0.11f &&
-		   (float)mouseX / (float)winWidth * 2.0f - 1.0f <= this->m_position.x / 0.11f + this->m_dimensions.x / 0.11f &&
-		   ((float)mouseY / (float)winHeight * 2.0f - 1.0f) * -1.0f >= this->m_position.y / 0.11f * (float)winWidth / (float)winHeight - this->m_dimensions.y / 0.11f * (float)winWidth / (float)winHeight &&
-		   ((float)mouseY / (float)winHeight * 2.0f - 1.0f) * -1.0f <= this->m_position.y / 0.11f * (float)winWidth / (float)winHeight + this->m_dimensions.y / 0.11f * (float)winWidth / (float)winHeight;
+	if(winWidth > winHeight)
+	{
+		return (float)mouseX / (float)winWidth * 2.0f - 1.0f >= this->m_position.x - this->m_dimensions.x &&
+			   (float)mouseX / (float)winWidth * 2.0f - 1.0f <= this->m_position.x + this->m_dimensions.x &&
+			   ((float)mouseY / (float)winHeight * 2.0f - 1.0f) * -1.0f >= this->m_position.y * (float)winWidth / (float)winHeight - this->m_dimensions.y * (float)winWidth / (float)winHeight &&
+			   ((float)mouseY / (float)winHeight * 2.0f - 1.0f) * -1.0f <= this->m_position.y * (float)winWidth / (float)winHeight + this->m_dimensions.y * (float)winWidth / (float)winHeight;
+	}
+	else if(winWidth <= winHeight)
+	{
+		return (float)mouseX / (float)winWidth * 2.0f - 1.0f >= this->m_position.x * (float)winHeight / (float)winWidth - this->m_dimensions.x * (float)winHeight / (float)winWidth &&
+			   (float)mouseX / (float)winWidth * 2.0f - 1.0f <= this->m_position.x * (float)winHeight / (float)winWidth + this->m_dimensions.x * (float)winHeight / (float)winWidth &&
+			   ((float)mouseY / (float)winHeight * 2.0f - 1.0f) * -1.0f >= this->m_position.y - this->m_dimensions.y * (float)winWidth / (float)winHeight &&
+			   ((float)mouseY / (float)winHeight * 2.0f - 1.0f) * -1.0f <= this->m_position.y + this->m_dimensions.y;
+	}
+
+	return false;
 }
 
 void Geodash3::Button::SetModelViewMat(glm::mat4 &modelViewMat)
