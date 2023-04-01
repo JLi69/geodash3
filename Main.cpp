@@ -2,9 +2,8 @@
 #include "src/Audio-Utils/SoundDevice.h"
 
 int main()
-{	
-	Geodash3::ToggleSoundDevice(Geodash3::OPEN);	
-	Geodash3::Engine gameEngine = Geodash3::Engine();
+{
+	Geodash3::SoundDev* dev = Geodash3::SoundDev::get();
+	Geodash3::Engine gameEngine = Geodash3::Engine();	
 	gameEngine.Run();
-	Geodash3::ToggleSoundDevice(Geodash3::CLOSE);
 }

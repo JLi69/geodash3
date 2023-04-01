@@ -1,12 +1,14 @@
+#include <AL/alc.h>
+
 namespace Geodash3
 {
-	enum SoundDevMode
+	class SoundDev
 	{
-		OPEN = 0,
-		CLOSE = 1
+		SoundDev();
+		~SoundDev();
+		ALCdevice* mDevice;
+		ALCcontext* mContext;
+	public:
+		static SoundDev* get();
 	};
-
-	//This function will connect to the sound device on the machine
-	//and will also disconnect from the sound device on the machine
-	void ToggleSoundDevice(SoundDevMode mode);
 }

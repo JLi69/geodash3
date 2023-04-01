@@ -1,5 +1,5 @@
 #include "TextureObj.h"
-#include <SOIL/SOIL.h>
+#include <SOIL2/SOIL2.h>
 #include <iostream>
 #include <cstdlib>
 #include <sstream>

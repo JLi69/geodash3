@@ -16,3 +16,18 @@
 [submodule "dependencies/include/glad"]
 	path = dependencies/include/glad
 	url = https://github.com/Dav1dde/glad
+[submodule "gllibs"]
+	path = gllibs
+	url = https://github.com/JLi69/gllibs
+[submodule "glm"]
+	path = glm
+	url = https://github.com/g-truc/glm
+[submodule "openal-soft"]
+	path = openal-soft
+	url = https://github.com/kcat/openal-soft
+[submodule "libsndfile"]
+	path = libsndfile
+	url = https://github.com/libsndfile/libsndfile
+[submodule "build/openal-soft"]
+	path = build/openal-soft
+	url = https://github.com/kcat/openal-soft

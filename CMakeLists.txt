@@ -4,29 +4,39 @@ cmake_minimum_required(VERSION 3.11)
 #Name of project
 project(geodash3)
 
-add_subdirectory(${CMAKE_SOURCE_DIR}/dependencies/include/glad)
-include_directories(${CMAKE_BINARY_DIR}/dependencies/include/glad/include)
-include_directories(${CMAKE_SOURCE_DIR}/dependencies/include/glfw/include)
-include_directories(${CMAKE_SOURCE_DIR}/dependencies/include/glm)
-include_directories(${CMAKE_SOURCE_DIR}/dependencies/include/openal-soft/include)
-include_directories(${CMAKE_SOURCE_DIR}/dependencies/include/soil/include)
-include_directories(${CMAKE_SOURCE_DIR}/dependencies/include/libsndfile/include)
+include_directories(${CMAKE_BINARY_DIR}/dependencies/gllibs/include)
+include_directories(${CMAKE_SOURCE_DIR}/glm)
+include_directories(${CMAKE_SOURCE_DIR}/openal-soft/include)
+include_directories(${CMAKE_SOURCE_DIR}/libsndfile/include)
 
 link_directories(${CMAKE_BINARY_DIR})
+link_directories(${CMAKE_BINARY_DIR}/libsndfile)
+link_directories(${CMAKE_BINARY_DIR}/openal-soft)
 find_package(OpenGL REQUIRED)
 
+add_subdirectory(openal-soft)
+add_subdirectory(libsndfile)
+
 if(${CMAKE_HOST_SYSTEM_NAME} STREQUAL "Windows")
-	set(CMAKE_CXX_FLAGS "-DWINDOWS -O2 -static-libstdc++ -static-libgcc -mwindows -Wl,-Bstatic,--whole-archive -lwinpthread -Wl,-Bdynamic,--no-whole-archive")	
+	set(CMAKE_CXX_FLAGS "-DWINDOWS -O2 -static-libstdc++ -static-libgcc -mwindows -Wl,-Bstatic,--whole-archive -lwinpthread -Wl,-Bdynamic,--no-whole-archive")
 	add_custom_target(
-		glad_lib
-		COMMAND cd dependencies/include/glad && mingw32-make
-	)
+			libsndfile
+			COMMAND cd libsndfile && mingw32-make
+		)
+	add_custom_target(
+			openal-soft
+			COMMAND cd openal-soft && mingw32-make
+		)
 else()
-	set(CMAKE_CXX_FLAGS "-Wl,-rpath=${ORIGIN} -O2 -flto -static-libstdc++ -static-libgcc")		
+	set(CMAKE_CXX_FLAGS "-Wl,-rpath=${ORIGIN} -O2 -flto -static-libstdc++ -static-libgcc")
 	add_custom_target(
-		glad_lib
-		COMMAND cd dependencies/include/glad && make
-	)
+			libsndfile
+			COMMAND cd libsndfile && make
+		)
+	add_custom_target(
+			openal-soft
+			COMMAND cd openal-soft && make
+		)
 endif()
 
 #Create the executable
@@ -35,7 +45,6 @@ add_executable(
 
 	#Files to compile
 	${PROJECT_SOURCE_DIR}/Main.cpp
-	#${PROJECT_SOURCE_DIR}/glad.c
 
 	#OpenGL utilities
 	${PROJECT_SOURCE_DIR}/src/GL-Utils/Shader.cpp
@@ -77,20 +86,22 @@ add_executable(
 
 	#Level loading
 	${PROJECT_SOURCE_DIR}/src/Level/level.cpp
+
+	${PROJECT_SOURCE_DIR}/gllibs/lib/glad.c
 )
 
-add_dependencies(${PROJECT_NAME} glad_lib)
+add_dependencies(${PROJECT_NAME} openal-soft)
+add_dependencies(${PROJECT_NAME} libsndfile)
+
 if(${CMAKE_HOST_SYSTEM_NAME} STREQUAL "Windows")
-	target_link_libraries(${PROJECT_NAME} ${CMAKE_BINARY_DIR}/dependencies/include/glad/libglad.a) 	
 	target_link_libraries(${PROJECT_NAME} gdi32 pthread)
-	target_link_libraries(${PROJECT_NAME} SOIL)	
+	target_link_libraries(${PROJECT_NAME} SOIL2)	
 	target_link_libraries(${PROJECT_NAME} OpenGL::GL)
 	target_link_libraries(${PROJECT_NAME} glfw3)
 	target_link_libraries(${PROJECT_NAME} OpenAL32)
 	target_link_libraries(${PROJECT_NAME} sndfile)	
 else()
-	target_link_libraries(${PROJECT_NAME} ${CMAKE_BINARY_DIR}/dependencies/include/glad/libglad.a) 	
-	target_link_libraries(${PROJECT_NAME} soil)
+	target_link_libraries(${PROJECT_NAME} SOIL2)
 	target_link_libraries(${PROJECT_NAME} OpenGL::GL)
 	target_link_libraries(${PROJECT_NAME} glfw3)
 	target_link_libraries(${PROJECT_NAME} openal)

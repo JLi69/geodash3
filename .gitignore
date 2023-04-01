@@ -22,4 +22,5 @@ deb
 
 CMakeFiles
 
-build/dependencies
+build/*
+!build/res
