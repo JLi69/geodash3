@@ -9,6 +9,7 @@ Geodash3::Engine::Engine()
 {	
 	//Initialize everything
 	Geodash3::init(this->m_gameWindow, "Geodash 3D");	
+	glfwSwapInterval(1);
 
 	//Set up the vertex buffers
 	//Cube	

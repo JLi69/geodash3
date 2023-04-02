@@ -1,21 +1,3 @@
-[submodule "dependencies/include/glfw"]
-	path = dependencies/include/glfw
-	url = https://github.com/glfw/glfw
-[submodule "dependencies/include/glm"]
-	path = dependencies/include/glm
-	url = https://github.com/g-truc/glm
-[submodule "dependencies/include/soil"]
-	path = dependencies/include/soil
-	url = https://github.com/littlstar/soil
-[submodule "dependencies/include/openal-soft"]
-	path = dependencies/include/openal-soft
-	url = https://github.com/kcat/openal-soft
-[submodule "dependencies/include/libsndfile"]
-	path = dependencies/include/libsndfile
-	url = https://github.com/libsndfile/libsndfile
-[submodule "dependencies/include/glad"]
-	path = dependencies/include/glad
-	url = https://github.com/Dav1dde/glad
 [submodule "gllibs"]
 	path = gllibs
 	url = https://github.com/JLi69/gllibs
@@ -28,6 +10,3 @@
 [submodule "libsndfile"]
 	path = libsndfile
 	url = https://github.com/libsndfile/libsndfile
-[submodule "build/openal-soft"]
-	path = build/openal-soft
-	url = https://github.com/kcat/openal-soft

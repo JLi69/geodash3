@@ -8,6 +8,10 @@ I wanted to create this game as a way to test my knowledge with OpenGL so far (s
 ## Compile the project
 **DEPENDENCIES:** [glfw](https://github.com/glfw/glfw), [SOIL](https://github.com/littlstar/soil), [glad](https://glad.dav1d.de/), [glm](https://github.com/g-truc/glm), [openal-soft](https://github.com/kcat/openal-soft), [libsndfile](https://github.com/libsndfile/libsndfile)
 
+```
+git clone --recursive https://github.com/JLi69/geodash3
+```
+
 To compile the project just run the following commands:
 
 **Linux**:
