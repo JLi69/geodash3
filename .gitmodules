@@ -1,12 +1,3 @@
-[submodule "gllibs"]
-	path = gllibs
-	url = https://github.com/JLi69/gllibs
 [submodule "glm"]
 	path = glm
 	url = https://github.com/g-truc/glm
-[submodule "openal-soft"]
-	path = openal-soft
-	url = https://github.com/kcat/openal-soft
-[submodule "libsndfile"]
-	path = libsndfile
-	url = https://github.com/libsndfile/libsndfile

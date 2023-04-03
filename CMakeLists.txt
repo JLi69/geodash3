@@ -4,29 +4,14 @@ cmake_minimum_required(VERSION 3.11)
 #Name of project
 project(geodash3)
 
-add_subdirectory(openal-soft EXCLUDE_FROM_ALL)
-add_subdirectory(libsndfile EXCLUDE_FROM_ALL)
-
-include_directories(${CMAKE_SOURCE_DIR}/gllibs/include)
+include_directories(${CMAKE_SOURCE_DIR}/glad/include)
 include_directories(${CMAKE_SOURCE_DIR}/glm)
-include_directories(${CMAKE_SOURCE_DIR}/openal-soft/include)
-include_directories(${CMAKE_SOURCE_DIR}/libsndfile/include)
 
 link_directories(${CMAKE_BINARY_DIR})
-link_directories(${CMAKE_BINARY_DIR}/libsndfile)
-link_directories(${CMAKE_BINARY_DIR}/openal-soft)
 find_package(OpenGL REQUIRED)
 
 if(${CMAKE_HOST_SYSTEM_NAME} STREQUAL "Windows")
 	set(CMAKE_CXX_FLAGS "-DWINDOWS -O2 -static-libstdc++ -static-libgcc -mwindows -Wl,-Bstatic,--whole-archive -lwinpthread -Wl,-Bdynamic,--no-whole-archive")
-	add_custom_target(
-		libsndfile
-		COMMAND cd libsndfile && mingw32-make sndfile
-		)
-	add_custom_target(
-		openal-soft
-		COMMAND cd openal-soft && mingw32-make OpenAL	
-		)
 	set(APP_ICON_RESOURCE_WINDOWS ${CMAKE_SOURCE_DIR}/geodash3.rc) 
 	
 	#Create the executable
@@ -82,15 +67,7 @@ if(${CMAKE_HOST_SYSTEM_NAME} STREQUAL "Windows")
 		${APP_ICON_RESOURCE_WINDOWS}
 	)
 else()
-	set(CMAKE_CXX_FLAGS "-Wl,-rpath=${ORIGIN} -O2 -flto -static-libstdc++ -static-libgcc")
-	add_custom_target(
-		libsndfile
-		COMMAND cd libsndfile && make sndfile
-		)
-	add_custom_target(
-		openal-soft
-		COMMAND cd openal-soft && make OpenAL	
-		)
+	set(CMAKE_CXX_FLAGS "-Wl,-rpath=${ORIGIN} -O2 -flto -static-libstdc++ -static-libgcc")	
 
 	#Create the executable
 	add_executable(
@@ -140,11 +117,9 @@ else()
 		#Level loading
 		${PROJECT_SOURCE_DIR}/src/Level/level.cpp
 	
-		${PROJECT_SOURCE_DIR}/gllibs/lib/glad.c
+		${PROJECT_SOURCE_DIR}/glad/glad.c
 	)
 endif()
-
-add_dependencies(${PROJECT_NAME} libsndfile openal-soft)
 
 if(${CMAKE_HOST_SYSTEM_NAME} STREQUAL "Windows")
 	target_link_libraries(${PROJECT_NAME} gdi32 pthread)
