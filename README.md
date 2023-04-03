@@ -6,7 +6,7 @@ This is a game somewhat inspired by the popular mobile game "Geometry Dash".
 I wanted to create this game as a way to test my knowledge with OpenGL so far (so far I have learned how to use textures and multiple models in OpenGL).
 
 ## Compile the project
-**DEPENDENCIES:** [glfw](https://github.com/glfw/glfw), [SOIL](https://github.com/littlstar/soil), [glad](https://glad.dav1d.de/), [glm](https://github.com/g-truc/glm), [openal-soft](https://github.com/kcat/openal-soft), [libsndfile](https://github.com/libsndfile/libsndfile)
+**DEPENDENCIES:** [glfw](https://github.com/glfw/glfw), [SOIL2](https://github.com/SpartanJ/SOIL2), [glad](https://glad.dav1d.de/), [glm](https://github.com/g-truc/glm), [openal-soft](https://github.com/kcat/openal-soft), [libsndfile](https://github.com/libsndfile/libsndfile)
 
 ```
 git clone --recursive https://github.com/JLi69/geodash3
