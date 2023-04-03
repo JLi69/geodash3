@@ -62,7 +62,7 @@ if(${CMAKE_HOST_SYSTEM_NAME} STREQUAL "Windows")
 		#Level loading
 		${PROJECT_SOURCE_DIR}/src/Level/level.cpp
 	
-		${PROJECT_SOURCE_DIR}/gllibs/lib/glad.c
+		${PROJECT_SOURCE_DIR}/glad/glad.c
 		
 		${APP_ICON_RESOURCE_WINDOWS}
 	)
