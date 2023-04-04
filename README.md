@@ -46,7 +46,7 @@ After that, merely run the command `./geodash3` to run the executable and play t
 You can jump on top of solid blocks to make your way across the level. There are bouncy blocks that can allow you to jump higher. However, you can only jump on top of the blocks as if you hit the block from the front or side you will die and have to restart the level. If you jump onto the spikes (the pyramids), you will die and have to restart the level (so avoid jumping onto them as I'm fairly certain that death is a bad thing). Once you have cleared the entire level, the next level will load and you can continue doing this until the last level and once you beat the final level, you will have won the game.
 
 ## Importing a level
-If you want to import a custom level, create a .lvl file with the [level editor](https://github.com/JLi69/geodash3-editor). Then take the level (found in the `saves` folder in the directory containing the level editor executable) and paste it into the `res/levels` folder in the directory containing the game executable. Then edit `level-list.txt` and add the name of the level file and open the game. You should hopefully be able to play your custom level! 
+If you want to import a custom level, create a .lvl file with the [level editor](https://github.com/JLi69/geodash3/tree/master/editor). Then take the level (found in the `saves` folder in the directory containing the level editor executable) and paste it into the `res/levels` folder in the directory containing the game executable. Then edit `level-list.txt` and add the name of the level file and open the game. You should hopefully be able to play your custom level! 
 
 ## Screenshots
 ![screenshot1](screenshots/geodash3-screenshot1.png)
