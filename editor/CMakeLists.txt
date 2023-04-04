@@ -10,7 +10,7 @@ find_package(OpenGL REQUIRED)
 
 if(${CMAKE_HOST_SYSTEM_NAME} STREQUAL "Windows")
 	set(CMAKE_CXX_FLAGS "-mwindows -O2 -static-libstdc++ -static-libgcc -DWINDOWS  -static -lpthread")
-	set(APP_ICON_RESOURCE_WINDOWS ${CMAKE_SOURCE_DIR}/../geodash3.rc) 
+	set(APP_ICON_RESOURCE_WINDOWS ${CMAKE_SOURCE_DIR}/geodash3.rc) 
 else()
 	set(CMAKE_CXX_FLAGS "-O2 -static-libstdc++ -static-libgcc")
 	set(APP_ICON_RESOURCE_WINDOWS "") 

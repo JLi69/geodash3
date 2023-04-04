@@ -15,6 +15,7 @@ void Geodash3::init(GLFWwindow *&win, const char *title)
 		exit(-1);
 	}
 	glfwMakeContextCurrent(win);
+	glfwSwapInterval(1);
 
 	GLFWimage icons[1];
 	icons[0].pixels = SOIL_load_image("res/geodash3.png", &icons[0].width, &icons[0].height, 0, SOIL_LOAD_RGBA);
