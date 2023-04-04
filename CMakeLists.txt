@@ -5,10 +5,11 @@ cmake_minimum_required(VERSION 3.11)
 project(geodash3)
 
 include_directories(${CMAKE_SOURCE_DIR}/glad/include)
-include_directories(${CMAKE_SOURCE_DIR}/glm)
 
 link_directories(${CMAKE_BINARY_DIR})
 find_package(OpenGL REQUIRED)
+
+add_subdirectory(editor)
 
 if(${CMAKE_HOST_SYSTEM_NAME} STREQUAL "Windows")
 	set(CMAKE_CXX_FLAGS "-DWINDOWS -O2 -static-libstdc++ -static-libgcc -mwindows -Wl,-Bstatic,--whole-archive -lwinpthread -Wl,-Bdynamic,--no-whole-archive")
@@ -120,6 +121,11 @@ else()
 		${PROJECT_SOURCE_DIR}/glad/glad.c
 	)
 endif()
+
+add_custom_target(
+	editor
+	COMMAND cmake --build editor
+	)
 
 if(${CMAKE_HOST_SYSTEM_NAME} STREQUAL "Windows")
 	target_link_libraries(${PROJECT_NAME} gdi32 pthread)
