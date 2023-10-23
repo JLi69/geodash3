@@ -12,7 +12,7 @@ find_package(OpenGL REQUIRED)
 add_subdirectory(editor)
 
 if(${CMAKE_HOST_SYSTEM_NAME} STREQUAL "Windows")
-	set(CMAKE_CXX_FLAGS "-DWINDOWS -O2 -static-libstdc++ -static-libgcc -mwindows -Wl,-Bstatic,--whole-archive -lwinpthread -Wl,-Bdynamic,--no-whole-archive")
+	set(CMAKE_CXX_FLAGS "-O2 -static-libstdc++ -static-libgcc -mwindows -Wl,-Bstatic,--whole-archive -lwinpthread -Wl,-Bdynamic,--no-whole-archive")
 	set(APP_ICON_RESOURCE_WINDOWS ${CMAKE_SOURCE_DIR}/geodash3.rc) 
 	
 	#Create the executable
